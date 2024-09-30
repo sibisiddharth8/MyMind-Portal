@@ -17,10 +17,10 @@ function App() {
           <Routes>
             <Route path="/" element={<div>Portal</div>} />
             <Route path="/Bio" element={<BioSection />} />
-            <Route path="/skills" element={<SkillsSection />} />
-            <Route path="/experience" element={<ExperienceSection />} />
-            <Route path="/projects" element={<ProjectsSection />} />
-            <Route path="/education" element={<EducationSection />} />
+            <Route path="/Skills" element={<SkillsSection />} />
+            <Route path="/Experience" element={<ExperienceSection />} />
+            <Route path="/Projects" element={<ProjectsSection />} />
+            <Route path="/Education" element={<EducationSection />} />
           </Routes>
        
       </Router>
