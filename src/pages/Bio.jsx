@@ -5,6 +5,7 @@ import { database,  storage } from '../FirebaseConfig';
 import styled from 'styled-components';
 
 import Header from '../components/Header/Header.jsx';
+import Footer from '../components/Footer'
 
 const Body = styled.div`
   background-color: ${({ theme }) => theme.bg};
@@ -44,8 +45,8 @@ const Title = styled.h1`
 `;
 
 const ProfilePic = styled.img`
-  width: 150px;
-  height: 150px;
+  width: 180px;
+  height: 180px;
   border: 2px solid ${({ theme }) => theme.primary};
   border-radius: 50%;
   margin: auto;
@@ -425,7 +426,18 @@ function Bio() {
             </ModalContent>
           </ModalOverlay>
         )}
+        
+        <Footer
+          footerData={{
+            name: bioData.name,
+            github: bioData.github,
+            linkedin: bioData.linkedin,
+            insta: bioData.insta,
+          }}
+          links=''
+        />
       </BioPortal>
+
     </Body>
   );
 }

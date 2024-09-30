@@ -12,7 +12,6 @@ const HeaderContainer = styled.div`
   background-color: ${({ theme }) => theme.card_light};
   position: fixed;
   top: 0;
-  z-index: 10;
   padding: 0 20px;
 `;
 
@@ -54,7 +53,7 @@ const PageTitle = styled.h1`
   font-weight: 600;
   position: absolute;
   left: 50%;
-  transform: translateX(-56%);
+  transform: translateX(-50%);
   white-space: nowrap;
 `;
 
