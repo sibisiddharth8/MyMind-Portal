@@ -1,0 +1,19 @@
+{
+  "name": "My Mind - Sibi's Portfolio",
+  "short_name": "Sibi's Portal",
+  "start_url": "/MyMind-Portal/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#111420",
+  "theme_color": "#ffffff",
+  "id": "Sibi-Siddharth-S",
+  "lang": "en-US",
+  "description": "MyMind - Sibi Siddharth S Portfolio, showcasing Web, Machine Learning, Deep Learning and Python projects.",
+  "icons": [
+    {
+      "src": "Icons/MyMindPortal.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}

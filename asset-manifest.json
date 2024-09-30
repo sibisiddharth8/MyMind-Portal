@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/MyMind-Portal/static/css/main.c55bdca2.css",
+    "main.js": "/MyMind-Portal/static/js/main.067e982f.js",
+    "static/js/453.709b0993.chunk.js": "/MyMind-Portal/static/js/453.709b0993.chunk.js",
+    "static/media/MyLogo.png": "/MyMind-Portal/static/media/MyLogo.e6e2f1ca8c59d9a76703.png",
+    "index.html": "/MyMind-Portal/index.html",
+    "main.c55bdca2.css.map": "/MyMind-Portal/static/css/main.c55bdca2.css.map",
+    "main.067e982f.js.map": "/MyMind-Portal/static/js/main.067e982f.js.map",
+    "453.709b0993.chunk.js.map": "/MyMind-Portal/static/js/453.709b0993.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c55bdca2.css",
+    "static/js/main.067e982f.js"
+  ]
+}
