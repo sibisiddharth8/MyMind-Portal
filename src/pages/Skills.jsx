@@ -3,8 +3,8 @@ import { database, storage } from '../FirebaseConfig';
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { ref as dbRef, set, onValue, remove } from 'firebase/database';
 import styled from 'styled-components';
-import Header from '../components/Header/Header.jsx'
-import Footer from '../components/Footer'
+import Header from '../components/Header/Header.jsx';
+import Footer from '../components/Footer';
 import { Padding } from '@mui/icons-material';
 
 const Body = styled.div`
@@ -26,7 +26,7 @@ const Form = styled.form`
 `;
 
 const Label = styled.label`
-width: 100%;
+  width: 100%;
   font-weight: bold;
 `;
 
@@ -51,7 +51,7 @@ const Select = styled.select`
 `;
 
 const Button = styled.button`
-  padding: 10px 15px; /* Adjusted padding for buttons */
+  padding: 10px 15px;
   background-color: ${(props) => props.bgColor || props.theme.button};
   color: ${(props) => props.theme.white};
   border: none;
@@ -64,14 +64,14 @@ const Button = styled.button`
     transform: scale(1.015);
   }
 
-  @media (max-width: 575px){
+  @media (max-width: 575px) {
     padding: 5px 10px;
     font-size: 14px;
   }
 `;
 
 const SkillList = styled.div`
-  margin-top: 30px; /* Increased top margin for better separation */
+  margin-top: 30px;
 `;
 
 const SkillItem = styled.div`
@@ -81,8 +81,7 @@ const SkillItem = styled.div`
   padding: 10px;
   border: 1px solid ${(props) => props.theme.primary};
   border-radius: 5px;
-  margin-bottom: 15px; /* Adjusted bottom margin for better spacing */
-
+  margin-bottom: 15px;
 `;
 
 const SkillActions = styled.div`
@@ -110,13 +109,13 @@ const ConfirmationModal = styled.div`
   }
 
   button {
-    margin: 5px;
+    margin: 20px 10px 0 10px;
   }
 `;
 
 const Skills = () => {
   const [skillName, setSkillName] = useState('');
-  const [skillType, setSkillType] = useState('0'); // Default is 0 (Frontend)
+  const [skillType, setSkillType] = useState('0');
   const [skillImage, setSkillImage] = useState(null);
   const [skillsList, setSkillsList] = useState({});
   const [loading, setLoading] = useState(true);
@@ -143,9 +142,7 @@ const Skills = () => {
       }
     });
   }, []);
-  
 
-  // Fetch existing skills
   useEffect(() => {
     const fetchSkills = () => {
       setLoading(true);
@@ -166,11 +163,10 @@ const Skills = () => {
     if (skillImage) {
       const folderPath = `skills/${skillType}/`;
       const imageRef = storageRef(storage, `${folderPath}${skillImage.name}`);
-      
+
       await uploadBytes(imageRef, skillImage).then(async (snapshot) => {
         const imageUrl = await getDownloadURL(snapshot.ref);
 
-        // Determine the next index for the new skill
         const nextIndex = editingSkillId !== null
           ? editingSkillId
           : Object.keys(skillsList[skillType]?.skills || {}).length;
@@ -180,10 +176,8 @@ const Skills = () => {
           image: imageUrl,
         };
 
-        // Push new skill data to Firebase Database
         await set(dbRef(database, `skills/${skillType}/skills/${nextIndex}`), skillData);
 
-        // Update skillsList state
         setSkillsList((prevSkills) => ({
           ...prevSkills,
           [skillType]: {
@@ -197,7 +191,7 @@ const Skills = () => {
 
         setSkillName('');
         setSkillImage(null);
-        setEditingSkillId(null); // Reset the editing state
+        setEditingSkillId(null);
       }).catch((error) => {
         console.error('Error uploading image:', error);
       });
@@ -215,8 +209,9 @@ const Skills = () => {
   };
 
   const handleEdit = (skillType, skillId, skill) => {
+    window.scrollTo(0, 0);
     setSkillName(skill.name);
-    setSkillImage(null); // Reset image if editing
+    setSkillImage(null);
     setSkillType(skillType);
     setEditingSkillId(skillId);
   };
@@ -225,82 +220,82 @@ const Skills = () => {
     <Body>
       <Header Title='MyMind | Skills Section'/>
       <Container>
-      <Form onSubmit={handleImageUpload}>
-        <Label>
-          Skill Name:
-          <Input
-            type="text"
-            value={skillName}
-            onChange={(e) => setSkillName(e.target.value)}
-            required
-          />
-        </Label>
+        <Form onSubmit={handleImageUpload}>
+          <Label>
+            Skill Name:
+            <Input
+              type="text"
+              value={skillName}
+              onChange={(e) => setSkillName(e.target.value)}
+              required
+            />
+          </Label>
 
-        <Label>
-          Skill Type:
-          <Select
-            value={skillType}
-            onChange={(e) => setSkillType(e.target.value)}
-          >
-            <option value="0">Frontend</option>
-            <option value="1">Backend</option>
-            <option value="2">AI/ML</option>
-            <option value="3">Others</option>
-          </Select>
-        </Label>
+          <Label>
+            Skill Type:
+            <Select
+              value={skillType}
+              onChange={(e) => setSkillType(e.target.value)}
+            >
+              <option value="0">Frontend</option>
+              <option value="1">Backend</option>
+              <option value="2">AI/ML</option>
+              <option value="3">Others</option>
+            </Select>
+          </Label>
 
-        <Label>
-          Upload Skill Image:
-          <Input
-            type="file"
-            onChange={(e) => setSkillImage(e.target.files[0])}
-            accept="image/*"
-            required={!editingSkillId}
-          />
-        </Label>
+          <Label>
+            Upload Skill Image:
+            <Input
+              type="file"
+              onChange={(e) => setSkillImage(e.target.files[0])}
+              accept="image/*"
+              required={!editingSkillId}
+            />
+          </Label>
 
-        <Button type="submit">{editingSkillId !== null ? 'Update Skill' : 'Add Skill'}</Button>
-      </Form>
+          <Button type="submit">{editingSkillId !== null ? 'Update Skill' : 'Add Skill'}</Button>
+        </Form>
 
-      {loading ? (
-        <div></div>
-      ) : (
-        Object.keys(skillsList).map((type) => (
-          <SkillList key={type}>
-            <h3>{type === '0' ? 'Frontend :' : type === '1' ? 'Backend :' : type === '2' ? 'AI/ML :' : 'Others :'}</h3>
-            {Object.entries(skillsList[type]?.skills || {}).map(([skillId, skill]) => (
-              <SkillItem key={skillId}>
-                <div>{skill.name}</div>
-                <SkillActions>
-                  <Button bgColor="#4caf50" hoverColor="#388E3C" onClick={() => handleEdit(type, skillId, skill)}>Edit</Button>
-                  <Button bgColor="#f44336" hoverColor="#D32F2F" onClick={() => { setShowDeleteModal(true); setSkillToDelete(skillId); }}>Delete</Button>
-                </SkillActions>
-              </SkillItem>
-            ))}
-          </SkillList>
-        ))
-      )}
+        {loading ? (
+          <div></div>
+        ) : (
+          Object.keys(skillsList).map((type) => (
+            <SkillList key={type}>
+              <h3>{type === '0' ? 'Frontend :' : type === '1' ? 'Backend :' : type === '2' ? 'AI/ML :' : 'Others :'}</h3>
+              {Object.entries(skillsList[type]?.skills || {}).map(([skillId, skill]) => (
+                <SkillItem key={skillId}>
+                  <div>{skill.name}</div>
+                  <SkillActions>
+                    <Button bgColor="#4caf50" hoverColor="#388E3C" onClick={() => handleEdit(type, skillId, skill)}>Edit</Button>
+                    <Button bgColor="#f44336" hoverColor="#D32F2F" onClick={() => { setShowDeleteModal(true); setSkillToDelete(skillId); }}>Delete</Button>
+                  </SkillActions>
+                </SkillItem>
+              ))}
+            </SkillList>
+          ))
+        )}
 
-      {showDeleteModal && (
-        <ConfirmationModal>
-          <div>
-            <h4>Are you sure you want to delete this skill?</h4>
-            <Button bgColor="#4caf50" hoverColor="#388E3C" onClick={handleDelete}>Yes, Delete</Button>
-            <Button bgColor="#f44336" hoverColor="#D32F2F" onClick={() => setShowDeleteModal(false)}>Cancel</Button>
-          </div>
-        </ConfirmationModal>
-      )}
-    </Container>
+        {showDeleteModal && (
+          <ConfirmationModal>
+            <div>
+              <h4>Are you sure you want to delete this skill?</h4>
+              <Button bgColor="#4caf50" hoverColor="#388E3C" onClick={handleDelete}>Yes, Delete</Button>
+              <Button bgColor="#f44336" hoverColor="#D32F2F" onClick={() => setShowDeleteModal(false)}>Cancel</Button>
+            </div>
+          </ConfirmationModal>
+        )}
+      </Container>
 
-    <Footer
-          footerData={{
-            name: bioData.name,
-            github: bioData.github,
-            linkedin: bioData.linkedin,
-            insta: bioData.insta,
-          }}
-          links=''
-        />
+      <Footer
+        footerData={{
+          name: bioData.name,
+          github: bioData.github,
+          linkedin: bioData.linkedin,
+          insta: bioData.insta,
+        }}
+        links=''
+      />
     </Body>
   );
 };

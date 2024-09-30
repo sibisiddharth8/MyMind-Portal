@@ -61,7 +61,7 @@ function Header({ Title }) {
   const navigate = useNavigate();
 
   const handleBackClick = () => {
-    navigate('/'); 
+    navigate('/Home'); 
   };
 
   return (

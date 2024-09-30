@@ -5,7 +5,7 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import GetAppIcon from '@mui/icons-material/GetApp';
 import { GitHub } from '@mui/icons-material';
 import logo from '../../images/MyLogo.png';
-import { Link } from 'react-scroll'; 
+import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const FooterContainer = styled.div`
   width: 100%;
@@ -106,8 +106,9 @@ const Copyright = styled.p`
   text-align: center;
 `;
 
-const Footer = ({ footerData, links=[] }) => {
+const Footer = ({ footerData, links = [] }) => {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
     const handleBeforeInstallPrompt = (e) => {
@@ -131,25 +132,28 @@ const Footer = ({ footerData, links=[] }) => {
   return (
     <FooterContainer>
       <FooterWrapper>
-        <a href="">
-          <LogoImg src={logo} alt="Sibi Siddharth S Logo MyMind" />
-        </a>
+        <LogoImg 
+          src={logo} 
+          alt="Sibi Siddharth S Logo MyMind" 
+          onClick={() => navigate('/Home')} // Handle logo click
+        />
         <Logo>Sibi Siddharth S</Logo>
-        {links && 
-        <Nav>
-          {links.map((link, index) => (
-            <NavLink
-              to={link.toLowerCase()} 
-              smooth={true}
-              duration={100} 
-              offset={-80} 
-              key={index}
-              aria-label={`${link} section`}
-            >
-              {link}
-            </NavLink>
-          ))}
-        </Nav>}
+        {links && (
+          <Nav>
+            {links.map((link, index) => (
+              <NavLink
+                to={link.toLowerCase()}
+                smooth={true}
+                duration={100}
+                offset={-80}
+                key={index}
+                aria-label={`${link} section`}
+              >
+                {link}
+              </NavLink>
+            ))}
+          </Nav>
+        )}
         <SocialMediaIcons>
           <SocialMediaIcon
             href={footerData?.github || '#'}

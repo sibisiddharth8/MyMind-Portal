@@ -1,3 +1,4 @@
+// App.jsx
 import React from 'react';
 import { darkTheme } from './utils/Themes.js';
 import { ThemeProvider } from "styled-components";
@@ -7,25 +8,34 @@ import SkillsSection from './pages/Skills.jsx';
 import ExperienceSection from './pages/Experience.jsx';
 import ProjectsSection from './pages/Projects.jsx';
 import EducationSection from './pages/Education.jsx';
+import Portal from './pages/Portal.jsx';
+import Login from './pages/Login.jsx';
+import { AuthProvider, useAuth } from './AuthContext';
+import './App.css';
 
-import './App.css'
+// PrivateRoute component
+const PrivateRoute = ({ element }) => {
+  const { isAuthenticated } = useAuth();
+  return isAuthenticated ? element : <Login />;
+}
 
 function App() {
   return (
     <ThemeProvider theme={darkTheme}>
-      <Router>
+      <AuthProvider> 
+        <Router>
           <Routes>
-            <Route path="/" element={<div>Portal</div>} />
-            <Route path="/Bio" element={<BioSection />} />
-            <Route path="/Skills" element={<SkillsSection />} />
-            <Route path="/Experience" element={<ExperienceSection />} />
-            <Route path="/Projects" element={<ProjectsSection />} />
-            <Route path="/Education" element={<EducationSection />} />
+            <Route path="/" element={<Login />} />
+            <Route path="/Home" element={<Portal />} />
+            <Route path="/Bio" element={<PrivateRoute element={<BioSection />} />} />
+            <Route path="/Skills" element={<PrivateRoute element={<SkillsSection />} />} />
+            <Route path="/Experience" element={<PrivateRoute element={<ExperienceSection />} />} />
+            <Route path="/Projects" element={<PrivateRoute element={<ProjectsSection />} />} />
+            <Route path="/Education" element={<PrivateRoute element={<EducationSection />} />} />
           </Routes>
-       
-      </Router>
+        </Router>
+      </AuthProvider>
     </ThemeProvider>
-
   );
 }
 
