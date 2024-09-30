@@ -8,6 +8,8 @@ import ExperienceSection from './pages/Experience.jsx';
 import ProjectsSection from './pages/Projects.jsx';
 import EducationSection from './pages/Education.jsx';
 
+import './App.css'
+
 function App() {
   return (
     <ThemeProvider theme={darkTheme}>

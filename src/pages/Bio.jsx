@@ -223,8 +223,8 @@ function Bio() {
   });
 
   const [showModal, setShowModal] = useState(false);
-  const [resumeFile, setResumeFile] = useState(null); // State to hold the file
-  const [isUploading, setIsUploading] = useState(false); // Track upload status
+  const [resumeFile, setResumeFile] = useState(null); 
+  const [isUploading, setIsUploading] = useState(false); 
 
   useEffect(() => {
     const bioRef = ref(database, '/Bio');
