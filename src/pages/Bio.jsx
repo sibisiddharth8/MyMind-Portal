@@ -83,6 +83,7 @@ const TextArea = styled.textarea`
   border-radius: 4px;
   border-color: ${({ theme }) => theme.primary};
   font-size: 16px;
+  resize: vertical;
 
   &:focus {
     border-width: 2px;
@@ -183,7 +184,6 @@ const UploadButtonLabel = styled.label`
   font-size: 16px;
   text-align: center;
   cursor: pointer;
-  transition: background-color 0.3s ease, opacity 0.3s ease;
 
   &:hover {
     background-color: ${({ theme }) => theme.primary};

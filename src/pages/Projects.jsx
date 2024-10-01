@@ -1,35 +1,406 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { database, storage } from '../FirebaseConfig';
+import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { ref as dbRef, set, get, remove } from 'firebase/database';
 import styled from 'styled-components';
+import Header from '../components/Header/Header.jsx';
+import Footer from '../components/Footer';
+
+import Placeholder from '../images/placeholder.png'
+
+const Body = styled.div`
+  background-color: ${(props) => props.theme.bg};
+  color: ${(props) => props.theme.text_primary};
+  font-family: Arial, sans-serif; /* Add a default font */
+`;
 
 const Container = styled.div`
+  padding: 20px;
+  padding-top: 90px;
+  max-width: 1200px; /* Increase max width for larger screens */
+  margin: 0 auto;
+`;
+
+const Form = styled.form`
+  display: flex;
+  padding: 0 0 40px 0;
+  flex-direction: column;
+  gap: 20px; /* Increase gap for better spacing */
+`;
+
+const Label = styled.label`
+  font-weight: bold;
+  font-size: 1rem; /* Default font size */
+`;
+
+const Input = styled.input`
+  width: 100%;
+  padding: 12px;
+  border-radius: 5px;
+  border: 1px solid ${(props) => props.theme.primary};
+  outline: none;
+  font-size: 1rem; /* Consistent font size */
+`;
+
+const CheckboxHolder = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Adjust gap between checkbox and label */
+`;
+
+const Checkbox = styled.input`
+  width: 16px; /* Adjust the width */
+  height: 16px; /* Adjust the height */
+`;
+
+const TextArea = styled.textarea`
+  padding: 12px;
+  border-radius: 5px;
+  border: 1px solid ${(props) => props.theme.primary};
+  outline: none;
+  font-size: 1rem; /* Consistent font size */
+  resize: vertical; 
+`;
+
+
+const Button = styled.button`
+  padding: 12px 20px; /* Increase padding for better touch target */
+  background-color: ${(props) => props.bgColor || props.theme.button};
+  color: ${(props) => props.theme.white};
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem; /* Default font size for buttons */
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: ${(props) => props.theme.buttonHover}; /* Optional hover effect */
+  }
+`;
+
+const MemberList = styled.div`
+  display: flex;
+  flex-direction: column; /* Change to column to stack members vertically */
+  gap: 15px; /* Add some spacing between members */
+  padding: 0 0 40px 0;
+`;
+
+
+const MemberItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Increase gap for better spacing */
+
+  @media (max-width: 768px) {
+    flex-direction: column; /* Stack elements vertically on screens smaller than 992px */
+    align-items: flex-start; /* Align items to the left */
+  }
+`;
+
+const MemberImage = styled.img`
+  width: 50px; /* Slightly increase image size */
+  height: 50px; /* Slightly increase image size */
+  border-radius: 50%;
+`;
+
+const AddMemberButton = styled(Button)`
+  background-color: ${(props) => props.theme.primary};
+  color: white;
+  white-space: nowrap;
+`;
+
+const ProjectList = styled.div`
+  margin-top: 20px; /* Increase margin for spacing */
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 100vh; /* Full height for centering */
-  background-color: ${({ theme }) => theme.background}; /* Use the theme background color */
-  color: ${({ theme }) => theme.text_primary}; /* Use the theme text color */
-  text-align: center;
-  padding: 2rem;
+  flex-wrap: wrap;
+  gap: 40px; /* Increase gap for better spacing */
+
+`;
+
+const ProjectCard = styled.div`
+  width: 300px;
+  height: 100%;
+  border: 1px solid ${(props) => props.theme.primary};
+  border-radius: 8px; /* Slightly round corners */
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Increase gap for better spacing */
+  padding: 20px; /* Increase padding for better spacing */
+  transition: box-shadow 0.3s;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Enhanced hover effect */
+  }
 
   @media (max-width: 768px) {
-    font-size: 1.5rem; /* Adjust font size for mobile */
+    padding: 15px; /* Reduce padding for mobile */
   }
 `;
 
-const Message = styled.h1`
-  font-size: 2.5rem; /* Default font size */
-  color: ${({ theme }) => theme.primary}; /* Theme primary color */
+const ProjectImage = styled.img`
+  width: 100%;
+  object-fit: cover; /* Maintain aspect ratio */
+  border-radius: 8px;
+`;
 
-  @media (max-width: 768px) {
-    font-size: 2rem; /* Smaller font size for mobile */
+const ProjectDetails = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Increase gap for better spacing */
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  gap: 15px;
+`;
+
+const EditButton = styled(Button)`
+  background-color: #4caf50;
+  width: 100%;
+
+  &:hover{
+    background-color: #388E3C;
   }
 `;
+
+const DeleteButton = styled(Button)`
+  background-color: #f44336;
+  width: 100%;
+
+  &:hover{
+    background-color: #D32F2F;
+  }
+`;
+
+const Select = styled.select`
+  padding: 12px;
+  border-radius: 5px;
+  border: 1px solid ${(props) => props.theme.primary};
+  outline: none;
+  font-size: 1rem; /* Consistent font size */
+`;
+
+const categories = ['Web', 'Deep Learning', 'Machine Learning']; // Update with your categories
 
 const Projects = () => {
+  const [projects, setProjects] = useState([]);
+  const [projectTitle, setProjectTitle] = useState('');
+  const [projectCategory, setProjectCategory] = useState('');
+  const [projectDate, setProjectDate] = useState('');
+  const [projectDescription, setProjectDescription] = useState('');
+  const [projectGithub, setProjectGithub] = useState('');
+  const [projectImage, setProjectImage] = useState(null);
+  const [projectWebapp, setProjectWebapp] = useState('');
+  const [projectTags, setProjectTags] = useState('');
+  const [members, setMembers] = useState([{ name: '', github: '', linkedin: '', img: '' }]);
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentProjectId, setCurrentProjectId] = useState(null);
+  const [ontop, setontop] = useState(false); // New state for isActive
+
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
+  const fetchProjects = () => {
+    const projectsRef = dbRef(database, 'projects');
+    get(projectsRef).then((snapshot) => {
+      const data = snapshot.val();
+      const projectsArray = data ? Object.keys(data).map(key => ({ id: key, ...data[key] })) : [];
+      setProjects(projectsArray);
+    });
+  };
+
+  const addMember = () => {
+    setMembers([...members, { name: '', github: '', linkedin: '', img: '' }]);
+  };
+
+  const handleMemberChange = (index, field, value) => {
+    const updatedMembers = members.map((member, i) => (i === index ? { ...member, [field]: value } : member));
+    setMembers(updatedMembers);
+  };
+
+  const handleImageUpload = async (e) => {
+    e.preventDefault();
+
+    if (projectImage) {
+      const imageRef = storageRef(storage, `projects/${projectImage.name}`);
+      await uploadBytes(imageRef, projectImage).then(async (snapshot) => {
+        const imageUrl = await getDownloadURL(snapshot.ref);
+        
+        const newProject = {
+          title: projectTitle,
+          category: projectCategory,
+          date: projectDate,
+          description: projectDescription,
+          github: projectGithub,
+          image: imageUrl,
+          webapp: projectWebapp,
+          tags: projectTags.split(','),
+          member: members,
+          ontop: ontop ? 1 : 0, // Add isActive attribute
+        };
+
+        const projectsRef = dbRef(database, 'projects');
+        get(projectsRef).then((snapshot) => {
+          const existingProjects = snapshot.val();
+          const nextId = existingProjects ? Object.keys(existingProjects).length : 0;
+          set(dbRef(database, `projects/${nextId}`), newProject).then(() => {
+            resetForm();
+            fetchProjects();
+          });
+        });
+      });
+    }
+  };
+
+  const resetForm = () => {
+    setProjectTitle('');
+    setProjectCategory('');
+    setProjectDate('');
+    setProjectDescription('');
+    setProjectGithub('');
+    setProjectImage(null);
+    setProjectWebapp('');
+    setProjectTags('');
+    setMembers([{ name: '', github: '', linkedin: '', img: '' }]);
+    setontop(false); // Reset isActive state
+  };
+
+  const handleEdit = (project) => {
+    setIsEditing(true);
+    setCurrentProjectId(project.id);
+    setProjectTitle(project.title);
+    setProjectCategory(project.category);
+    setProjectDate(project.date);
+    setProjectDescription(project.description);
+    setProjectGithub(project.github);
+    setProjectWebapp(project.webapp);
+    setProjectTags(project.tags.join(','));
+    setMembers(project.member);
+    setontop(project.ontop === 1); // Set isActive state based on existing project data
+  };
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+
+    const imageUrl = projectImage ? await uploadImage() : null;
+
+    const updatedProject = {
+      title: projectTitle,
+      category: projectCategory,
+      date: projectDate,
+      description: projectDescription,
+      github: projectGithub,
+      image: imageUrl || projects.find(p => p.id === currentProjectId).image, // Keep old image if no new image uploaded
+      webapp: projectWebapp,
+      tags: projectTags.split(','),
+      member: members,
+      ontop: ontop ? 1 : 0, // Add isActive attribute
+    };
+
+    set(dbRef(database, `projects/${currentProjectId}`), updatedProject).then(() => {
+      resetForm();
+      setIsEditing(false);
+      fetchProjects();
+    });
+  };
+
+  const uploadImage = async () => {
+    const imageRef = storageRef(storage, `projects/${projectImage.name}`);
+    const snapshot = await uploadBytes(imageRef, projectImage);
+    return await getDownloadURL(snapshot.ref);
+  };
+
+  const handleDelete = (id) => {
+    if (window.confirm('Are you sure you want to delete this project?')) {
+      remove(dbRef(database, `projects/${id}`)).then(() => {
+        fetchProjects();
+      });
+    }
+  };
+
   return (
-    <Container>
-      <Message>Page Under Construction</Message>
-    </Container>
+    <Body>
+      <Header 
+        Title="MyMind | Projects Section"
+      />
+      <Container>
+        <Form onSubmit={isEditing ? handleUpdate : handleImageUpload}>
+          <Label>Title :</Label>
+          <Input type="text" value={projectTitle} onChange={(e) => setProjectTitle(e.target.value)} required />
+
+          <Label>Category :</Label>
+          <Select value={projectCategory} onChange={(e) => setProjectCategory(e.target.value)}>
+            <option value="">Select a category</option>
+            {categories.map((category, index) => (
+              <option key={index} value={category}>{category}</option>
+            ))}
+          </Select>
+
+          <Label>Date :</Label>
+          <Input type="text" value={projectDate} onChange={(e) => setProjectDate(e.target.value)} required />
+
+          <Label>Description :</Label>
+          <TextArea rows="4" value={projectDescription} onChange={(e) => setProjectDescription(e.target.value)} required />
+
+          <Label>GitHub URL :</Label>
+          <Input type="url" value={projectGithub} onChange={(e) => setProjectGithub(e.target.value)} />
+
+          <Label>Web App URL :</Label>
+          <Input type="url" value={projectWebapp} onChange={(e) => setProjectWebapp(e.target.value)} />
+
+          <Label>Tags (comma separated) :</Label>
+          <Input type="text" value={projectTags} onChange={(e) => setProjectTags(e.target.value)} />
+
+          <Label>Project Image :</Label>
+          <Input type="file" accept="image/*" onChange={(e) => setProjectImage(e.target.files[0])}/>
+
+
+
+          <Label>Team List :</Label>
+          <MemberList>
+          {members.map((member, index) => (
+            <MemberItem key={index}>
+              <MemberImage src={member.img || Placeholder } alt={member.name || 'Member'} />
+                <Input type="text" placeholder="Name" value={member.name} onChange={(e) => handleMemberChange(index, 'name', e.target.value)} />
+                <Input type="url" placeholder="GitHub URL" value={member.github} onChange={(e) => handleMemberChange(index, 'github', e.target.value)} />
+                <Input type="url" placeholder="LinkedIn URL" value={member.linkedin} onChange={(e) => handleMemberChange(index, 'linkedin', e.target.value)} />
+                <Input type="url" placeholder="Image URL" value={member.img} onChange={(e) => handleMemberChange(index, 'img', e.target.value)} />
+                <AddMemberButton type="button" onClick={addMember}>Add Member</AddMemberButton>
+            </MemberItem>
+          ))}
+          
+        </MemberList>
+
+        <CheckboxHolder>
+          <Label>Show Project on Home Page :</Label>
+          <Checkbox type="checkbox" checked={ontop} onChange={() => setontop(!ontop)} />
+          </CheckboxHolder>
+          
+          <Button type="submit">{isEditing ? 'Update Project' : 'Add Project'}</Button>
+        </Form>
+
+        <h2>Project List :</h2>
+        <ProjectList>
+          {projects.map((project) => (
+            <ProjectCard key={project.id}>
+              <ProjectImage src={project.image} alt={project.title} />
+              <ProjectDetails>
+                <h3>{project.title}</h3>
+                <p>Category: {project.category}</p>
+              </ProjectDetails>
+              <ButtonWrapper>
+                <EditButton onClick={() => handleEdit(project)}>Edit</EditButton>
+                <DeleteButton onClick={() => handleDelete(project.id)}>Delete</DeleteButton>
+              </ButtonWrapper>
+            </ProjectCard>
+          ))}
+        </ProjectList>
+      </Container>
+      <Footer />
+    </Body>
   );
 };
 
