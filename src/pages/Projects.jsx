@@ -73,7 +73,7 @@ const Button = styled.button`
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: ${(props) => props.theme.buttonHover}; /* Optional hover effect */
+    opacity: 0.9;
   }
 `;
 
