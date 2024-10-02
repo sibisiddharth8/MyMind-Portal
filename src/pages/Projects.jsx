@@ -174,6 +174,33 @@ const DeleteButton = styled(Button)`
   }
 `;
 
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ModalContent = styled.div`
+  background-color: ${(props) => props.theme.bg};
+  padding: 30px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  text-align: center;
+`;
+
+const ModalButton = styled(Button)`
+  margin-top: 20px;
+  margin-right: 10px;
+`;
+
+
 const Select = styled.select`
   padding: 12px;
   border-radius: 5px;
@@ -198,6 +225,8 @@ const Projects = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentProjectId, setCurrentProjectId] = useState(null);
   const [ontop, setontop] = useState(false); // New state for isActive
+  const [projectToDelete, setProjectToDelete] = useState(null); 
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   useEffect(() => {
     fetchProjects();
@@ -269,6 +298,7 @@ const Projects = () => {
   };
 
   const handleEdit = (project) => {
+    window.scrollTo(0,0);
     setIsEditing(true);
     setCurrentProjectId(project.id);
     setProjectTitle(project.title);
@@ -313,10 +343,20 @@ const Projects = () => {
     return await getDownloadURL(snapshot.ref);
   };
 
-  const handleDelete = (id) => {
-    if (window.confirm('Are you sure you want to delete this project?')) {
-      remove(dbRef(database, `projects/${id}`)).then(() => {
+  const handleDelete = (projectId) => {
+    setProjectToDelete(projectId);
+    setShowDeleteModal(true);
+  };
+
+  const handleDeleteClick = (projectId) => {
+    handleDelete(projectId);
+  };
+
+  const confirmDelete = () => {
+    if (projectToDelete) {
+      remove(dbRef(database, `projects/${projectToDelete}`)).then(() => {
         fetchProjects();
+        setShowDeleteModal(false);
       });
     }
   };
@@ -393,13 +433,24 @@ const Projects = () => {
               </ProjectDetails>
               <ButtonWrapper>
                 <EditButton onClick={() => handleEdit(project)}>Edit</EditButton>
-                <DeleteButton onClick={() => handleDelete(project.id)}>Delete</DeleteButton>
+                <DeleteButton onClick={() => handleDeleteClick(project.id)}>Delete</DeleteButton>
               </ButtonWrapper>
             </ProjectCard>
           ))}
         </ProjectList>
       </Container>
       <Footer />
+
+      {showDeleteModal && (
+        <ModalOverlay>
+          <ModalContent>
+            <h3>Confirm Deletion</h3>
+            <p>Are you sure you want to delete this project?</p>
+            <ModalButton onClick={confirmDelete} bgColor="#f44336">Delete</ModalButton>
+            <ModalButton onClick={() => setShowDeleteModal(false)} bgColor="#4caf50">Cancel</ModalButton>
+          </ModalContent>
+        </ModalOverlay>
+      )}
     </Body>
   );
 };
