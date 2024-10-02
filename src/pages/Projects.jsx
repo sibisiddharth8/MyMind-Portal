@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { database, storage } from '../FirebaseConfig';
 import { ref as storageRef, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
-import { ref as dbRef, set, get, remove } from 'firebase/database';
+import { ref as dbRef, set, get, remove,  onValue } from 'firebase/database';
 import styled from 'styled-components';
 import Header from '../components/Header/Header.jsx';
 import Footer from '../components/Footer';
@@ -232,6 +232,26 @@ const Projects = () => {
   const [ontop, setontop] = useState(false); // New state for isActive
   const [projectToDelete, setProjectToDelete] = useState(null); 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [bioData, setBioData] = useState({
+    name: "",
+    description: "",
+    roles: [],
+    profilepic: "",
+    github: "",
+    linkedin: "",
+    insta: "",
+    resume: ""
+  });
+
+  useEffect(() => {
+    const bioRef = dbRef(database, '/Bio');
+    onValue(bioRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        setBioData(data);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     fetchProjects();
@@ -528,7 +548,15 @@ const Projects = () => {
           ))}
         </ProjectList>
       </Container>
-      <Footer />
+      <Footer
+        footerData={{
+          name: bioData.name,
+          github: bioData.github,
+          linkedin: bioData.linkedin,
+          insta: bioData.insta,
+        }}
+        links=''
+      />
 
       {showDeleteModal && (
         <ModalOverlay>
