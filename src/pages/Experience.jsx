@@ -245,6 +245,7 @@ const Experience = () => {
   };
 
   const handleEdit = (exp) => {
+    window.scrollTo(0,0);
     setNewExperience({
       company: exp.company,
       date: exp.date,
@@ -289,25 +290,25 @@ const Experience = () => {
       <Header Title="MyMind | Experience Portal" />
       <Container>
         <Form onSubmit={handleSubmit}>
-          <Label>Company</Label>
+          <Label>Company :</Label>
           <Input type="text" name="company" value={newExperience.company} onChange={handleInputChange} required />
 
-          <Label>Date</Label>
+          <Label>Date :</Label>
           <Input type="text" name="date" value={newExperience.date} onChange={handleInputChange} required />
 
-          <Label>Role</Label>
+          <Label>Role :</Label>
           <Input type="text" name="role" value={newExperience.role} onChange={handleInputChange} required />
 
-          <Label>Description</Label>
+          <Label>Description :</Label>
           <Input type="text" name="desc" value={newExperience.desc} onChange={handleInputChange} required />
 
-          <Label>Link</Label>
+          <Label>Link :</Label>
           <Input type="url" name="link" value={newExperience.link} onChange={handleInputChange} required />
 
-          <Label>Skills (comma separated)</Label>
+          <Label>Skills : (comma separated)</Label>
           <Input type="text" name="skills" value={newExperience.skills} onChange={handleInputChange} />
 
-          <Label>Upload Image</Label>
+          <Label>Upload Image :</Label>
           <Input type="file" onChange={handleImageChange} accept="image/*" />
 
           <Button type="submit">{editingId !== null ? 'Update Experience' : 'Add Experience'}</Button>
