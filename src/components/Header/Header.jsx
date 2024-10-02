@@ -13,6 +13,7 @@ const HeaderContainer = styled.div`
   position: fixed;
   top: 0;
   padding: 0 20px;
+  z-index: 10000;
 `;
 
 const BackButton = styled.button`

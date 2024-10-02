@@ -16,7 +16,7 @@ const Body = styled.div`
 const Container = styled.div`
   padding: 20px;
   padding-top: 90px;
-  max-width: 1200px; /* Increase max width for larger screens */
+  max-width: 1080px;
   margin: 0 auto;
 `;
 
@@ -34,7 +34,7 @@ const Label = styled.label`
 
 const Input = styled.input`
   width: 100%;
-  padding: 12px;
+  padding: 10px;
   border-radius: 5px;
   border: 1px solid ${(props) => props.theme.primary};
   outline: none;
@@ -207,7 +207,7 @@ const ModalButton = styled(Button)`
 
 
 const Select = styled.select`
-  padding: 12px;
+  padding: 10px;
   border-radius: 5px;
   border: 1px solid ${(props) => props.theme.primary};
   outline: none;
