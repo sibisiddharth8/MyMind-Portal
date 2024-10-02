@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { database, storage } from '../FirebaseConfig';
-import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { ref as storageRef, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { ref as dbRef, set, onValue, remove } from 'firebase/database';
 import styled from 'styled-components';
 import Header from '../components/Header/Header.jsx';
@@ -31,7 +31,6 @@ const Label = styled.label`
 `;
 
 const Input = styled.input`
-  margin-left: 15px;
   padding: 10px;
   border-radius: 5px;
   border: 1px solid ${(props) => props.theme.primary};
@@ -45,7 +44,6 @@ const Input = styled.input`
 const Select = styled.select`
   padding: 10px;
   border-radius: 5px;
-  margin-left: 15px;
   border: 1px solid ${(props) => props.theme.primary};
   outline: none;
 `;
@@ -61,7 +59,7 @@ const Button = styled.button`
 
   &:hover {
     background-color: ${(props) => props.hoverColor || props.theme.primary};
-    transform: scale(1.015);
+    opacity: 0.9;
   }
 
   @media (max-width: 575px) {
@@ -199,12 +197,26 @@ const Skills = () => {
   };
 
   const handleDelete = async () => {
+    const skillData = skillsList[skillType].skills[skillToDelete];
+    if (skillData && skillData.image) {
+      // Create a reference to the image file to delete
+      const imageRef = storageRef(storage, skillData.image);
+  
+      // Delete the image from Firebase Storage
+      await deleteObject(imageRef).catch((error) => {
+        console.error('Error deleting image:', error);
+      });
+    }
+  
+    // Remove the skill data from Firebase Realtime Database
     await remove(dbRef(database, `skills/${skillType}/skills/${skillToDelete}`));
+    
     setSkillsList((prevSkills) => {
       const updatedSkills = { ...prevSkills };
       delete updatedSkills[skillType].skills[skillToDelete];
       return updatedSkills;
     });
+  
     setShowDeleteModal(false);
   };
 
@@ -223,17 +235,18 @@ const Skills = () => {
         <Form onSubmit={handleImageUpload}>
           <Label>
             Skill Name:
-            <Input
+          </Label>
+          <Input
               type="text"
               value={skillName}
               onChange={(e) => setSkillName(e.target.value)}
               required
             />
-          </Label>
 
           <Label>
             Skill Type:
-            <Select
+          </Label>
+          <Select
               value={skillType}
               onChange={(e) => setSkillType(e.target.value)}
             >
@@ -242,17 +255,16 @@ const Skills = () => {
               <option value="2">AI/ML</option>
               <option value="3">Others</option>
             </Select>
-          </Label>
 
           <Label>
-            Upload Skill Image:
-            <Input
+            Upload Skill Image: 
+          </Label>
+          <Input
               type="file"
               onChange={(e) => setSkillImage(e.target.files[0])}
               accept="image/*"
               required={!editingSkillId}
             />
-          </Label>
 
           <Button type="submit">{editingSkillId !== null ? 'Update Skill' : 'Add Skill'}</Button>
         </Form>

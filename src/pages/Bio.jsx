@@ -224,8 +224,10 @@ function Bio() {
   });
 
   const [showModal, setShowModal] = useState(false);
-  const [resumeFile, setResumeFile] = useState(null); 
-  const [isUploading, setIsUploading] = useState(false); 
+  const [resumeFile, setResumeFile] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadingModal, setUploadingModal] = useState(false); // For showing the "Uploading..." modal
+  const [successModal, setSuccessModal] = useState(false); // For showing the "Upload Successful" modal
 
   useEffect(() => {
     const bioRef = ref(database, '/Bio');
@@ -283,7 +285,8 @@ function Bio() {
 
   const uploadResume = async () => {
     if (resumeFile) {
-      setIsUploading(true); // Indicate that upload is happening
+      setIsUploading(true); // Start uploading
+      setUploadingModal(true); // Show uploading modal
       const storageRefInstance = storageRef(storage, `resumes/${resumeFile.name}`);
       await uploadBytes(storageRefInstance, resumeFile);
       const downloadURL = await getDownloadURL(storageRefInstance);
@@ -291,11 +294,12 @@ function Bio() {
         ...prevData,
         resume: downloadURL, // Update resume link in state
       }));
-      setIsUploading(false); // Upload is complete
+      setIsUploading(false); // End upload
+      setUploadingModal(false); // Hide uploading modal
+      setSuccessModal(true); // Show success modal
     }
   };
 
-  // Monitor changes to bioData.resume and save to Firebase only after it is updated
   useEffect(() => {
     if (!isUploading && bioData.resume) {
       handleSave();
@@ -426,7 +430,28 @@ function Bio() {
             </ModalContent>
           </ModalOverlay>
         )}
-        
+
+        {uploadingModal && (
+          <ModalOverlay>
+            <ModalContent>
+              <h2>Uploading...</h2>
+              <p>Your resume is being uploaded. Please wait.</p>
+            </ModalContent>
+          </ModalOverlay>
+        )}
+
+        {successModal && (
+          <ModalOverlay>
+            <ModalContent>
+              <h2>Upload Successful</h2>
+              <p>Your resume has been uploaded successfully!</p>
+              <Button bgColor="#4caf50" hoverColor="#388E3C" onClick={() => setSuccessModal(false)}>
+                Close
+              </Button>
+            </ModalContent>
+          </ModalOverlay>
+        )}
+
         <Footer
           footerData={{
             name: bioData.name,
@@ -437,9 +462,9 @@ function Bio() {
           links=''
         />
       </BioPortal>
-
     </Body>
   );
 }
 
 export default Bio;
+

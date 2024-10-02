@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { database, storage } from '../FirebaseConfig';
-import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { ref as storageRef, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { ref as dbRef, set, get, remove } from 'firebase/database';
 import styled from 'styled-components';
 import Header from '../components/Header/Header.jsx';
@@ -11,7 +11,6 @@ import Placeholder from '../images/placeholder.png'
 const Body = styled.div`
   background-color: ${(props) => props.theme.bg};
   color: ${(props) => props.theme.text_primary};
-  font-family: Arial, sans-serif; /* Add a default font */
 `;
 
 const Container = styled.div`
@@ -104,9 +103,13 @@ const MemberImage = styled.img`
 `;
 
 const AddMemberButton = styled(Button)`
+  width: 100%;
   background-color: ${(props) => props.theme.primary};
-  color: white;
-  white-space: nowrap;
+  background-color: #4caf50;
+
+  &:hover{
+    background-color: #388E3C;
+  }
 `;
 
 const ProjectList = styled.div`
@@ -153,6 +156,8 @@ const ProjectDetails = styled.div`
 
 const ButtonWrapper = styled.div`
   display: flex;
+  justify-content: center;
+  align-items: center;
   gap: 15px;
 `;
 
@@ -254,35 +259,39 @@ const Projects = () => {
     e.preventDefault();
 
     if (projectImage) {
-      const imageRef = storageRef(storage, `projects/${projectImage.name}`);
-      await uploadBytes(imageRef, projectImage).then(async (snapshot) => {
-        const imageUrl = await getDownloadURL(snapshot.ref);
-        
-        const newProject = {
-          title: projectTitle,
-          category: projectCategory,
-          date: projectDate,
-          description: projectDescription,
-          github: projectGithub,
-          image: imageUrl,
-          webapp: projectWebapp,
-          tags: projectTags.split(','),
-          member: members,
-          ontop: ontop ? 1 : 0, // Add isActive attribute
-        };
+        const imageRef = storageRef(storage, `projects/${projectImage.name}`);
+        await uploadBytes(imageRef, projectImage).then(async (snapshot) => {
+            const imageUrl = await getDownloadURL(snapshot.ref);
 
-        const projectsRef = dbRef(database, 'projects');
-        get(projectsRef).then((snapshot) => {
-          const existingProjects = snapshot.val();
-          const nextId = existingProjects ? Object.keys(existingProjects).length : 0;
-          set(dbRef(database, `projects/${nextId}`), newProject).then(() => {
-            resetForm();
-            fetchProjects();
-          });
+            const newProject = {
+                title: projectTitle,
+                category: projectCategory,
+                date: projectDate,
+                description: projectDescription,
+                github: projectGithub,
+                image: imageUrl,
+                webapp: projectWebapp,
+                tags: projectTags.split(','),
+                member: members,
+                ontop: ontop ? 1 : 0, // Add isActive attribute
+            };
+
+            const projectsRef = dbRef(database, 'projects');
+            get(projectsRef).then((snapshot) => {
+                const existingProjects = snapshot.val();
+                
+                // Find the maximum ID from the existing projects and add 1
+                const nextId = existingProjects ? Math.max(...Object.keys(existingProjects).map(id => parseInt(id))) + 1 : 0;
+                
+                set(dbRef(database, `projects/${nextId}`), newProject).then(() => {
+                    resetForm();
+                    fetchProjects();
+                });
+            });
         });
-      });
     }
-  };
+};
+
 
   const resetForm = () => {
     setProjectTitle('');
@@ -354,11 +363,67 @@ const Projects = () => {
 
   const confirmDelete = () => {
     if (projectToDelete) {
-      remove(dbRef(database, `projects/${projectToDelete}`)).then(() => {
-        fetchProjects();
-        setShowDeleteModal(false);
+      // Get the project's data to retrieve the image URL before deletion
+      const projectRef = dbRef(database, `projects/${projectToDelete}`);
+      get(projectRef).then((snapshot) => {
+        const projectData = snapshot.val();
+  
+        // If the project has an image, delete it from Firebase Storage
+        if (projectData && projectData.image) {
+          const imageRef = storageRef(storage, projectData.image);
+          deleteObject(imageRef)
+            .then(() => {
+              console.log('Image deleted successfully');
+            })
+            .catch((error) => {
+              console.error('Error deleting image:', error);
+            });
+        }
+  
+        // After the image is deleted, delete the project data
+        remove(projectRef).then(() => {
+          fetchProjects(); // Refresh the project list
+          setShowDeleteModal(false); // Close the modal
+        });
       });
     }
+  };
+
+  const handleMemberImageUpload = async (file, index) => {
+    if (file) {
+      const imageRef = storageRef(storage, `profile_pics/${file.name}`);
+      const snapshot = await uploadBytes(imageRef, file);
+      const imageUrl = await getDownloadURL(snapshot.ref);
+      
+      // Update the members array with the new image URL
+      const updatedMembers = members.map((member, i) => 
+        i === index ? { ...member, img: imageUrl } : member
+      );
+      setMembers(updatedMembers);
+    }
+  };
+  
+  const handleMemberFileChange = (e, index) => {
+    const file = e.target.files[0];
+    handleMemberImageUpload(file, index);
+  };
+
+  const handleDeleteMember = async (index) => {
+    const memberToDelete = members[index];
+  
+    if (memberToDelete.img) {
+      // Delete image from Firebase Storage
+      const imageRef = storageRef(storage, memberToDelete.img);
+      try {
+        await deleteObject(imageRef);
+      } catch (error) {
+        console.error("Error deleting member image: ", error);
+      }
+    }
+  
+    // Remove the member from the members array
+    const updatedMembers = members.filter((_, i) => i !== index);
+    setMembers(updatedMembers);
   };
 
   return (
@@ -403,13 +468,37 @@ const Projects = () => {
           <MemberList>
           {members.map((member, index) => (
             <MemberItem key={index}>
-              <MemberImage src={member.img || Placeholder } alt={member.name || 'Member'} />
-                <Input type="text" placeholder="Name" value={member.name} onChange={(e) => handleMemberChange(index, 'name', e.target.value)} />
-                <Input type="url" placeholder="GitHub URL" value={member.github} onChange={(e) => handleMemberChange(index, 'github', e.target.value)} />
-                <Input type="url" placeholder="LinkedIn URL" value={member.linkedin} onChange={(e) => handleMemberChange(index, 'linkedin', e.target.value)} />
-                <Input type="url" placeholder="Image URL" value={member.img} onChange={(e) => handleMemberChange(index, 'img', e.target.value)} />
-                <AddMemberButton type="button" onClick={addMember}>Add Member</AddMemberButton>
-            </MemberItem>
+            <MemberImage src={member.img || Placeholder} alt={member.name || 'Member'} />
+            <Input
+              type="text"
+              placeholder="Name"
+              value={member.name}
+              onChange={(e) => handleMemberChange(index, 'name', e.target.value)}
+            />
+            <Input
+              type="url"
+              placeholder="GitHub URL"
+              value={member.github}
+              onChange={(e) => handleMemberChange(index, 'github', e.target.value)}
+            />
+            <Input
+              type="url"
+              placeholder="LinkedIn URL"
+              value={member.linkedin}
+              onChange={(e) => handleMemberChange(index, 'linkedin', e.target.value)}
+            />
+            <Input
+              type="file"
+              accept="image/*"
+              onChange={(e) => handleMemberFileChange(e, index)}
+            />
+
+            <ButtonWrapper>
+              <AddMemberButton type="button" onClick={addMember}>Add</AddMemberButton>
+              <DeleteButton onClick={() => handleDeleteMember(index)} bgColor="#f44336">Delete</DeleteButton>
+            </ButtonWrapper>
+          </MemberItem>
+          
           ))}
           
         </MemberList>
