@@ -5,7 +5,115 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import GetAppIcon from '@mui/icons-material/GetApp';
 import { GitHub } from '@mui/icons-material';
 import logo from '../../images/MyLogo.png';
-import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
+import { Link, useNavigate } from 'react-router-dom'; 
+import { database} from '../../FirebaseConfig';
+import { ref, onValue } from 'firebase/database';
+
+const Footer = ({ footerData, links = [], navigateto }) => {
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const navigate = useNavigate(); 
+  const [bioData, setBioData] = useState({
+    name: "",
+    description: "",
+    roles: [],
+    profilepic: "",
+    github: "",
+    linkedin: "",
+    insta: "",
+    resume: ""
+  });
+
+  useEffect(() => {
+    const bioRef = ref(database, '/Bio');
+    onValue(bioRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        setBioData(data);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
+  }, []);
+
+  const handleInstallClick = () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+    }
+  };
+
+  return (
+    <FooterContainer>
+      <FooterWrapper>
+        <LogoImg 
+          src={logo} 
+          alt="Sibi Siddharth S Logo MyMind" 
+          onClick={() => navigate(navigateto || '/Home')}
+        />
+        <Logo>Sibi Siddharth S</Logo>
+        {links && (
+          <Nav>
+            {links.map((link, index) => (
+              <NavLink
+                to={link.toLowerCase()}
+                smooth={true}
+                duration={100}
+                offset={-80}
+                key={index}
+                aria-label={`${link} section`}
+              >
+                {link}
+              </NavLink>
+            ))}
+          </Nav>
+        )}
+        <SocialMediaIcons>
+          <SocialMediaIcon
+            href={footerData?.github || bioData?.github}
+            target="_blank"
+            aria-label="GitHub profile"
+          >
+            <GitHub />
+          </SocialMediaIcon>
+          <SocialMediaIcon
+            href={footerData?.github || bioData?.linkedin}
+            target="_blank"
+            aria-label="LinkedIn profile"
+          >
+            <LinkedInIcon />
+          </SocialMediaIcon>
+          <SocialMediaIcon
+            href={footerData?.github || bioData?.insta}
+            target="_blank"
+            aria-label="Instagram profile"
+          >
+            <InstagramIcon />
+          </SocialMediaIcon>
+          {deferredPrompt && (
+            <InstallIconWrapper onClick={handleInstallClick} aria-label="Install App">
+              <GetAppIcon />
+            </InstallIconWrapper>
+          )}
+        </SocialMediaIcons>
+        <Copyright>
+          &copy; {new Date().getFullYear()} Sibi Siddharth S. All rights reserved.
+        </Copyright>
+      </FooterWrapper>
+    </FooterContainer>
+  );
+};
+
+export default Footer;
 
 const FooterContainer = styled.div`
   width: 100%;
@@ -102,92 +210,5 @@ const InstallIconWrapper = styled.div`
 const Copyright = styled.p`
   margin-top: 1.5rem;
   font-size: 0.9rem;
-  color: ${({ theme }) => theme.soft2};
   text-align: center;
 `;
-
-const Footer = ({ footerData, links = [] }) => {
-  const [deferredPrompt, setDeferredPrompt] = useState(null);
-  const navigate = useNavigate(); // Initialize useNavigate
-
-  useEffect(() => {
-    const handleBeforeInstallPrompt = (e) => {
-      e.preventDefault();
-      setDeferredPrompt(e);
-    };
-
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-
-    return () => {
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    };
-  }, []);
-
-  const handleInstallClick = () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-    }
-  };
-
-  return (
-    <FooterContainer>
-      <FooterWrapper>
-        <LogoImg 
-          src={logo} 
-          alt="Sibi Siddharth S Logo MyMind" 
-          onClick={() => navigate('/Home')} // Handle logo click
-        />
-        <Logo>Sibi Siddharth S</Logo>
-        {links && (
-          <Nav>
-            {links.map((link, index) => (
-              <NavLink
-                to={link.toLowerCase()}
-                smooth={true}
-                duration={100}
-                offset={-80}
-                key={index}
-                aria-label={`${link} section`}
-              >
-                {link}
-              </NavLink>
-            ))}
-          </Nav>
-        )}
-        <SocialMediaIcons>
-          <SocialMediaIcon
-            href={footerData?.github || '#'}
-            target="_blank"
-            aria-label="GitHub profile"
-          >
-            <GitHub />
-          </SocialMediaIcon>
-          <SocialMediaIcon
-            href={footerData?.linkedin || '#'}
-            target="_blank"
-            aria-label="LinkedIn profile"
-          >
-            <LinkedInIcon />
-          </SocialMediaIcon>
-          <SocialMediaIcon
-            href={footerData?.insta || '#'}
-            target="_blank"
-            aria-label="Instagram profile"
-          >
-            <InstagramIcon />
-          </SocialMediaIcon>
-          {deferredPrompt && (
-            <InstallIconWrapper onClick={handleInstallClick} aria-label="Install App">
-              <GetAppIcon />
-            </InstallIconWrapper>
-          )}
-        </SocialMediaIcons>
-        <Copyright>
-          &copy; {new Date().getFullYear()} Sibi Siddharth S. All rights reserved.
-        </Copyright>
-      </FooterWrapper>
-    </FooterContainer>
-  );
-};
-
-export default Footer;

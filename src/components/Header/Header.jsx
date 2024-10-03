@@ -58,11 +58,11 @@ const PageTitle = styled.h1`
   white-space: nowrap;
 `;
 
-function Header({ Title }) {
+function Header({ Title, navigateto }) {
   const navigate = useNavigate();
 
   const handleBackClick = () => {
-    navigate('/Home'); 
+    navigate(navigateto || '/Home'); 
   };
 
   return (

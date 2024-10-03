@@ -120,26 +120,6 @@ const Skills = () => {
   const [editingSkillId, setEditingSkillId] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [skillToDelete, setSkillToDelete] = useState(null);
-  const [bioData, setBioData] = useState({
-    name: "",
-    description: "",
-    roles: [],
-    profilepic: "",
-    github: "",
-    linkedin: "",
-    insta: "",
-    resume: ""
-  });
-
-  useEffect(() => {
-    const bioRef = dbRef(database, '/Bio');
-    onValue(bioRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        setBioData(data);
-      }
-    });
-  }, []);
 
   useEffect(() => {
     const fetchSkills = () => {
@@ -299,15 +279,7 @@ const Skills = () => {
         )}
       </Container>
 
-      <Footer
-        footerData={{
-          name: bioData.name,
-          github: bioData.github,
-          linkedin: bioData.linkedin,
-          insta: bioData.insta,
-        }}
-        links=''
-      />
+      <Footer  />
     </Body>
   );
 };

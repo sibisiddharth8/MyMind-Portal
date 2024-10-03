@@ -1,12 +1,246 @@
 import React, { useState, useEffect } from 'react';
-import { ref, onValue, set, update, remove } from "firebase/database";
+import { ref, onValue, update, remove } from "firebase/database";
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { database,  storage } from '../FirebaseConfig';
+import { database, storage } from '../FirebaseConfig';
 import styled from 'styled-components';
 
 import Header from '../components/Header/Header.jsx';
-import Footer from '../components/Footer'
+import Footer from '../components/Footer';
+import Modal from '../components/Modal/Modal.jsx';
 
+function Bio() {
+  const [bioData, setBioData] = useState({
+    name: "",
+    description: "",
+    roles: [],
+    profilepic: "",
+    github: "",
+    linkedin: "",
+    insta: "",
+    resume: ""
+  });
+
+  const [resumeFile, setResumeFile] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalType, setModalType] = useState(''); 
+
+  useEffect(() => {
+    const bioRef = ref(database, '/Bio');
+    onValue(bioRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        setBioData(data);
+      }
+    });
+  }, []);
+
+  const handleSave = () => {
+    const bioRef = ref(database, '/Bio');
+    update(bioRef, bioData);
+  };
+
+  const handleDelete = () => {
+    const bioRef = ref(database, '/Bio');
+    remove(bioRef);
+    setBioData({
+      name: "",
+      description: "",
+      roles: [],
+      profilepic: "",
+      github: "",
+      linkedin: "",
+      insta: "",
+      resume: ""
+    });
+    setModalVisible(false);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setBioData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleRolesChange = (e) => {
+    setBioData((prevData) => ({
+      ...prevData,
+      roles: e.target.value.split(','),
+    }));
+  };
+
+  const handleFileUpload = (e) => {
+    setResumeFile(e.target.files[0]);
+  };
+
+  const uploadResume = async () => {
+    if (resumeFile) {
+      const storageRefInstance = storageRef(storage, `resumes/${resumeFile.name}`);
+      await uploadBytes(storageRefInstance, resumeFile);
+      const downloadURL = await getDownloadURL(storageRefInstance);
+      setBioData((prevData) => ({
+        ...prevData,
+        resume: downloadURL, // Update resume link in state
+      }));
+    }
+  };
+
+  useEffect(() => {
+    if (!isUploading && bioData.resume) {
+      handleSave();
+    }
+  }, [bioData.resume]); // Trigger when resume link changes
+
+  const handleSaveWithUpload = async () => {
+    setIsUploading(true);
+    setModalType('upload');
+    setModalVisible(true); // Show upload modal
+    if (resumeFile) {
+      await uploadResume(); // Wait until the upload is finished
+    } else {
+      handleSave(); // If no file, save the bio data as usual
+    }
+    setIsUploading(false);
+    setModalType('success');
+  };
+
+  const handleDeleteConfirmation = () => {
+    setModalType('delete');
+    setModalVisible(true);
+  };
+
+  return (
+    <Body>
+      <Header Title="MyMind | Bio Section" />
+      <BioPortal>
+        <BioContent>
+          {bioData.profilepic && (
+            <ProfilePic src={bioData.profilepic} alt="Profile" />
+          )}
+          <Title>Bio Information</Title>
+
+          <StyledLabel htmlFor="name">Name :</StyledLabel>
+          <InputField
+            type="text"
+            name="name"
+            id="name"
+            value={bioData.name}
+            onChange={handleChange}
+            placeholder="Enter Name"
+          />
+
+          <StyledLabel htmlFor="description">Description :</StyledLabel>
+          <TextArea
+            name="description"
+            id="description"
+            value={bioData.description}
+            onChange={handleChange}
+            placeholder="Enter Description"
+            rows="4"
+          />
+
+          <StyledLabel htmlFor="roles">Roles (comma separated) :</StyledLabel>
+          <InputField
+            type="text"
+            name="roles"
+            id="roles"
+            value={bioData.roles.join(',')}
+            onChange={handleRolesChange}
+            placeholder="Enter Roles"
+          />
+
+          <StyledLabel htmlFor="profilepic">Profile Picture URL :</StyledLabel>
+          <InputField
+            type="text"
+            name="profilepic"
+            id="profilepic"
+            value={bioData.profilepic}
+            onChange={handleChange}
+            placeholder="Enter Profile Picture URL"
+          />
+
+          <StyledLabel htmlFor="github">GitHub URL :</StyledLabel>
+          <InputField
+            type="text"
+            name="github"
+            id="github"
+            value={bioData.github}
+            onChange={handleChange}
+            placeholder="Enter GitHub URL"
+          />
+
+          <StyledLabel htmlFor="linkedin">LinkedIn URL :</StyledLabel>
+          <InputField
+            type="text"
+            name="linkedin"
+            id="linkedin"
+            value={bioData.linkedin}
+            onChange={handleChange}
+            placeholder="Enter LinkedIn URL"
+          />
+
+          <StyledLabel htmlFor="insta">Instagram URL :</StyledLabel>
+          <InputField
+            type="text"
+            name="insta"
+            id="insta"
+            value={bioData.insta}
+            onChange={handleChange}
+            placeholder="Enter Instagram URL"
+          />
+
+          <StyledLabel htmlFor="resume">Resume Upload :</StyledLabel>
+          <FileUploadWrapper>
+            <UploadButtonLabel htmlFor="file-upload">Upload Resume</UploadButtonLabel>
+            <HiddenFileInput 
+              type="file" 
+              accept=".pdf" 
+              id="file-upload" 
+              onChange={handleFileUpload} 
+            />
+            {resumeFile && <FileNameDisplay>{resumeFile.name}</FileNameDisplay>}
+          </FileUploadWrapper>
+        </BioContent>
+
+        <ButtonWrapper>
+          <Button bgColor="#4caf50" hoverColor="#388E3C" onClick={handleSaveWithUpload}>
+            Save
+          </Button>
+          <Button bgColor="#f44336" hoverColor="#D32F2F" onClick={handleDeleteConfirmation}>
+            Delete
+          </Button>
+        </ButtonWrapper>
+
+        <Modal
+          title={
+            modalType === 'delete' ? "Confirm Deletion" 
+            : modalType === 'upload' ? "Uploading..." 
+            : "Upload Successful"
+          }
+
+          message={
+            modalType === 'delete' ? "Are you sure you want to delete this bio?"
+              : modalType === 'upload' ? "Your data is being uploaded. Please wait." : "Your data has been uploaded successfully!"
+            }
+
+          onFeature={modalType === 'delete' ? handleDelete : null}
+          onClose={() => setModalVisible(false)}
+          isVisible={modalVisible}
+          showDelete={modalType === 'delete'} 
+        />
+        
+        <Footer />
+      </BioPortal>
+    </Body>
+  );
+}
+
+export default Bio;
+
+
+// Styles
 const Body = styled.div`
   background-color: ${({ theme }) => theme.bg};
   padding-bottom: 1rem;
@@ -134,41 +368,6 @@ const Button = styled.button`
   }
 `;
 
-
-const ModalOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ModalContent = styled.div`
-  background-color: ${({ theme }) => theme.card};
-  color: ${({ theme }) => theme.text_primary};
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  text-align: center;
-
-  h2 {
-    margin-bottom: 1rem;
-    font-size: 24px;
-  }
-
-  p {
-    margin-bottom: 1.5rem;
-  }
-
-  button {
-    margin: 0.5rem;
-  }
-`;
-
 const FileUploadWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -210,261 +409,3 @@ const FileNameDisplay = styled.p`
     font-size: 12px;
   }
 `;
-
-function Bio() {
-  const [bioData, setBioData] = useState({
-    name: "",
-    description: "",
-    roles: [],
-    profilepic: "",
-    github: "",
-    linkedin: "",
-    insta: "",
-    resume: ""
-  });
-
-  const [showModal, setShowModal] = useState(false);
-  const [resumeFile, setResumeFile] = useState(null);
-  const [isUploading, setIsUploading] = useState(false);
-  const [uploadingModal, setUploadingModal] = useState(false); // For showing the "Uploading..." modal
-  const [successModal, setSuccessModal] = useState(false); // For showing the "Upload Successful" modal
-
-  useEffect(() => {
-    const bioRef = ref(database, '/Bio');
-    onValue(bioRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        setBioData(data);
-      }
-    });
-  }, []);
-
-  const handleSave = () => {
-    const bioRef = ref(database, '/Bio');
-    update(bioRef, bioData);
-  };
-
-  const handleDelete = () => {
-    const bioRef = ref(database, '/Bio');
-    remove(bioRef);
-    setBioData({
-      name: "",
-      description: "",
-      roles: [],
-      profilepic: "",
-      github: "",
-      linkedin: "",
-      insta: "",
-      resume: ""
-    });
-    setShowModal(false);
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setBioData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  const handleRolesChange = (e) => {
-    setBioData((prevData) => ({
-      ...prevData,
-      roles: e.target.value.split(','),
-    }));
-  };
-
-  const handleDeleteConfirmation = () => {
-    setShowModal(true);
-  };
-
-  const handleFileUpload = (e) => {
-    setResumeFile(e.target.files[0]);
-  };
-
-  const uploadResume = async () => {
-    if (resumeFile) {
-      setIsUploading(true); // Start uploading
-      setUploadingModal(true); // Show uploading modal
-      const storageRefInstance = storageRef(storage, `resumes/${resumeFile.name}`);
-      await uploadBytes(storageRefInstance, resumeFile);
-      const downloadURL = await getDownloadURL(storageRefInstance);
-      setBioData((prevData) => ({
-        ...prevData,
-        resume: downloadURL, // Update resume link in state
-      }));
-      setIsUploading(false); // End upload
-      setUploadingModal(false); // Hide uploading modal
-      setSuccessModal(true); // Show success modal
-    }
-  };
-
-  useEffect(() => {
-    if (!isUploading && bioData.resume) {
-      handleSave();
-    }
-  }, [bioData.resume]); // Trigger when resume link changes
-
-  const handleSaveWithUpload = async () => {
-    if (resumeFile) {
-      await uploadResume(); // Wait until the upload is finished
-    } else {
-      handleSave(); // If no file, save the bio data as usual
-    }
-  };
-
-  return (
-    <Body>
-      <Header Title="MyMind | Bio Section" />
-      <BioPortal>
-        <BioContent>
-          {bioData.profilepic && (
-            <ProfilePic src={bioData.profilepic} alt="Profile" />
-          )}
-          <Title>Bio Information</Title>
-
-          <StyledLabel htmlFor="name">Name:</StyledLabel>
-          <InputField
-            type="text"
-            name="name"
-            id="name"
-            value={bioData.name}
-            onChange={handleChange}
-            placeholder="Enter Name"
-          />
-
-          <StyledLabel htmlFor="description">Description:</StyledLabel>
-          <TextArea
-            name="description"
-            id="description"
-            value={bioData.description}
-            onChange={handleChange}
-            placeholder="Enter Description"
-            rows="4"
-          />
-
-          <StyledLabel htmlFor="roles">Roles (comma separated):</StyledLabel>
-          <InputField
-            type="text"
-            name="roles"
-            id="roles"
-            value={bioData.roles.join(',')}
-            onChange={handleRolesChange}
-            placeholder="Enter Roles"
-          />
-
-          <StyledLabel htmlFor="profilepic">Profile Picture URL:</StyledLabel>
-          <InputField
-            type="text"
-            name="profilepic"
-            id="profilepic"
-            value={bioData.profilepic}
-            onChange={handleChange}
-            placeholder="Enter Profile Picture URL"
-          />
-
-          <StyledLabel htmlFor="github">GitHub URL:</StyledLabel>
-          <InputField
-            type="text"
-            name="github"
-            id="github"
-            value={bioData.github}
-            onChange={handleChange}
-            placeholder="Enter GitHub URL"
-          />
-
-          <StyledLabel htmlFor="linkedin">LinkedIn URL:</StyledLabel>
-          <InputField
-            type="text"
-            name="linkedin"
-            id="linkedin"
-            value={bioData.linkedin}
-            onChange={handleChange}
-            placeholder="Enter LinkedIn URL"
-          />
-
-          <StyledLabel htmlFor="insta">Instagram URL:</StyledLabel>
-          <InputField
-            type="text"
-            name="insta"
-            id="insta"
-            value={bioData.insta}
-            onChange={handleChange}
-            placeholder="Enter Instagram URL"
-          />
-
-          <StyledLabel htmlFor="resume">Resume Upload:</StyledLabel>
-          <FileUploadWrapper>
-            <UploadButtonLabel htmlFor="file-upload">Upload Resume</UploadButtonLabel>
-            <HiddenFileInput 
-              type="file" 
-              accept=".pdf" 
-              id="file-upload" 
-              onChange={handleFileUpload} 
-            />
-            {resumeFile && <FileNameDisplay>{resumeFile.name}</FileNameDisplay>}
-          </FileUploadWrapper>
-        </BioContent>
-
-        <ButtonWrapper>
-          <Button bgColor="#4caf50" hoverColor="#388E3C" onClick={handleSaveWithUpload}>
-              Save
-            </Button>
-            <Button bgColor="#f44336" hoverColor="#D32F2F" onClick={handleDeleteConfirmation}>
-              Delete
-          </Button>
-        </ButtonWrapper>
-
-        {showModal && (
-          <ModalOverlay>
-            <ModalContent>
-              <h2>Confirm Deletion</h2>
-              <p>Are you sure you want to delete this bio?</p>
-              <Button bgColor="#f44336" hoverColor="#D32F2F" onClick={handleDelete}>
-                Confirm
-              </Button>
-              <Button bgColor="#4caf50" hoverColor="#388E3C" onClick={() => setShowModal(false)}>
-                Cancel
-              </Button>
-            </ModalContent>
-          </ModalOverlay>
-        )}
-
-        {uploadingModal && (
-          <ModalOverlay>
-            <ModalContent>
-              <h2>Uploading...</h2>
-              <p>Your resume is being uploaded. Please wait.</p>
-            </ModalContent>
-          </ModalOverlay>
-        )}
-
-        {successModal && (
-          <ModalOverlay>
-            <ModalContent>
-              <h2>Upload Successful</h2>
-              <p>Your resume has been uploaded successfully!</p>
-              <Button bgColor="#4caf50" hoverColor="#388E3C" onClick={() => setSuccessModal(false)}>
-                Close
-              </Button>
-            </ModalContent>
-          </ModalOverlay>
-        )}
-
-        <Footer
-          footerData={{
-            name: bioData.name,
-            github: bioData.github,
-            linkedin: bioData.linkedin,
-            insta: bioData.insta,
-          }}
-          links=''
-        />
-      </BioPortal>
-    </Body>
-  );
-}
-
-export default Bio;
-
