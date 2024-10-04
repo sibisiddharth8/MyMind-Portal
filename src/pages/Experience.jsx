@@ -267,7 +267,7 @@ const Experience = () => {
 
   return (
     <Body>
-      <Header Title="MyMind | Experience Portal" />
+      <Header Title="MyMind | Experience Section" />
       <Container>
         <Form onSubmit={handleSubmit}>
           <Label>Company :</Label>

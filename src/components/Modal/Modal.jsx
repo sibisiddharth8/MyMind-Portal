@@ -11,6 +11,7 @@ const ModalOverlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 10000;
 `;
 
 const ModalContent = styled.div`
@@ -100,8 +101,8 @@ function Modal({ title, message, onClose, onFeature, isVisible, showDelete = fal
   return (
     <ModalOverlay onClick={handleOverlayClick}>
       <ModalContent>
-        <h2>{title || ''}</h2>
-        <p>{message || ''}</p>
+        <h2>{title || 'Modal Title'}</h2>
+        <p>{message || 'Modal Message Space'}</p>
         <ButtonWrapper>
           {showDelete && <FeatureButton onClick={onFeature}>Delete</FeatureButton>}
           <Button onClick={onClose}>Close</Button>
