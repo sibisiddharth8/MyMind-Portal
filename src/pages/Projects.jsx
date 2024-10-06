@@ -7,218 +7,14 @@ import Header from '../components/Header/Header.jsx';
 import Footer from '../components/Footer';
 
 import Placeholder from '../images/placeholder.png'
+import Modal from '../components/Modal/Modal.jsx'
 
-const Body = styled.div`
-  background-color: ${(props) => props.theme.bg};
-  color: ${(props) => props.theme.text_primary};
-`;
-
-const Container = styled.div`
-  padding: 20px;
-  padding-top: 90px;
-  max-width: 1080px;
-  margin: 0 auto;
-`;
-
-const Form = styled.form`
-  display: flex;
-  padding: 0 0 40px 0;
-  flex-direction: column;
-  gap: 20px; /* Increase gap for better spacing */
-`;
-
-const Label = styled.label`
-  font-weight: bold;
-  font-size: 1rem; /* Default font size */
-`;
-
-const Input = styled.input`
-  width: 100%;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid ${(props) => props.theme.primary};
-  outline: none;
-  font-size: 1rem; /* Consistent font size */
-`;
-
-const CheckboxHolder = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px; /* Adjust gap between checkbox and label */
-`;
-
-const Checkbox = styled.input`
-  width: 16px; /* Adjust the width */
-  height: 16px; /* Adjust the height */
-`;
-
-const TextArea = styled.textarea`
-  padding: 12px;
-  border-radius: 5px;
-  border: 1px solid ${(props) => props.theme.primary};
-  outline: none;
-  font-size: 1rem; /* Consistent font size */
-  resize: vertical; 
-`;
-
-
-const Button = styled.button`
-  padding: 12px 20px; /* Increase padding for better touch target */
-  background-color: ${(props) => props.bgColor || props.theme.button};
-  color: ${(props) => props.theme.white};
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1rem; /* Default font size for buttons */
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    opacity: 0.9;
-  }
-`;
-
-const MemberList = styled.div`
-  display: flex;
-  flex-direction: column; /* Change to column to stack members vertically */
-  gap: 15px; /* Add some spacing between members */
-  padding: 0 0 40px 0;
-`;
-
-
-const MemberItem = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px; /* Increase gap for better spacing */
-
-  @media (max-width: 768px) {
-    flex-direction: column; /* Stack elements vertically on screens smaller than 992px */
-    align-items: flex-start; /* Align items to the left */
-  }
-`;
-
-const MemberImage = styled.img`
-  width: 50px; /* Slightly increase image size */
-  height: 50px; /* Slightly increase image size */
-  border-radius: 50%;
-`;
-
-const AddMemberButton = styled(Button)`
-  width: 100%;
-  background-color: ${(props) => props.theme.primary};
-  background-color: #4caf50;
-
-  &:hover{
-    background-color: #388E3C;
-  }
-`;
-
-const ProjectList = styled.div`
-  margin-top: 20px; /* Increase margin for spacing */
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 40px; /* Increase gap for better spacing */
-
-`;
-
-const ProjectCard = styled.div`
-  width: 300px;
-  height: 100%;
-  border: 1px solid ${(props) => props.theme.primary};
-  border-radius: 8px; /* Slightly round corners */
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  gap: 15px; /* Increase gap for better spacing */
-  padding: 20px; /* Increase padding for better spacing */
-  transition: box-shadow 0.3s;
-
-  &:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Enhanced hover effect */
-  }
-
-  @media (max-width: 768px) {
-    padding: 15px; /* Reduce padding for mobile */
-  }
-`;
-
-const ProjectImage = styled.img`
-  width: 100%;
-  object-fit: cover; /* Maintain aspect ratio */
-  border-radius: 8px;
-`;
-
-const ProjectDetails = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px; /* Increase gap for better spacing */
-`;
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
-`;
-
-const EditButton = styled(Button)`
-  background-color: #4caf50;
-  width: 100%;
-
-  &:hover{
-    background-color: #388E3C;
-  }
-`;
-
-const DeleteButton = styled(Button)`
-  background-color: #f44336;
-  width: 100%;
-
-  &:hover{
-    background-color: #D32F2F;
-  }
-`;
-
-const ModalOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const ModalContent = styled.div`
-  background-color: ${(props) => props.theme.bg};
-  padding: 30px;
-  border-radius: 10px;
-  width: 90%;
-  max-width: 500px;
-  text-align: center;
-`;
-
-const ModalButton = styled(Button)`
-  margin-top: 20px;
-  margin-right: 10px;
-`;
-
-
-const Select = styled.select`
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid ${(props) => props.theme.primary};
-  outline: none;
-  font-size: 1rem; /* Consistent font size */
-`;
-
-const categories = ['Web', 'Deep Learning', 'Machine Learning']; // Update with your categories
+const categories = ['Web', 'Deep Learning', 'Machine Learning']; //categories
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
   const [projectTitle, setProjectTitle] = useState('');
+  const [projectid, setProjectid] = useState('');
   const [projectCategory, setProjectCategory] = useState('');
   const [projectDate, setProjectDate] = useState('');
   const [projectDescription, setProjectDescription] = useState('');
@@ -228,30 +24,10 @@ const Projects = () => {
   const [projectTags, setProjectTags] = useState('');
   const [members, setMembers] = useState([{ name: '', github: '', linkedin: '', img: '' }]);
   const [isEditing, setIsEditing] = useState(false);
-  const [currentProjectId, setCurrentProjectId] = useState(null);
-  const [ontop, setontop] = useState(false); // New state for isActive
+  const [ontop, setontop] = useState(false); 
   const [projectToDelete, setProjectToDelete] = useState(null); 
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [bioData, setBioData] = useState({
-    name: "",
-    description: "",
-    roles: [],
-    profilepic: "",
-    github: "",
-    linkedin: "",
-    insta: "",
-    resume: ""
-  });
-
-  useEffect(() => {
-    const bioRef = dbRef(database, '/Bio');
-    onValue(bioRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        setBioData(data);
-      }
-    });
-  }, []);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalType, setModalType] = useState('');
 
   useEffect(() => {
     fetchProjects();
@@ -278,13 +54,21 @@ const Projects = () => {
   const handleImageUpload = async (e) => {
     e.preventDefault();
 
+    if (isEditing) {
+        handleUpdate(e);
+        return;
+    }
+
     if (projectImage) {
+        setModalType('upload');
+        setModalVisible(true);
         const imageRef = storageRef(storage, `projects/${projectImage.name}`);
         await uploadBytes(imageRef, projectImage).then(async (snapshot) => {
             const imageUrl = await getDownloadURL(snapshot.ref);
 
             const newProject = {
                 title: projectTitle,
+                id:'',
                 category: projectCategory,
                 date: projectDate,
                 description: projectDescription,
@@ -293,28 +77,30 @@ const Projects = () => {
                 webapp: projectWebapp,
                 tags: projectTags.split(','),
                 member: members,
-                ontop: ontop ? 1 : 0, // Add isActive attribute
+                ontop: ontop ? 1 : 0,
             };
 
             const projectsRef = dbRef(database, 'projects');
             get(projectsRef).then((snapshot) => {
                 const existingProjects = snapshot.val();
                 
-                // Find the maximum ID from the existing projects and add 1
+                // Calculate next ID only for new projects
                 const nextId = existingProjects ? Math.max(...Object.keys(existingProjects).map(id => parseInt(id))) + 1 : 0;
                 
-                set(dbRef(database, `projects/${nextId}`), newProject).then(() => {
+                // Set the project with the calculated next ID
+                set(dbRef(database, `projects/${nextId}`), { ...newProject, id: nextId }).then(() => {
                     resetForm();
                     fetchProjects();
                 });
             });
         });
+      setModalType('success');
     }
-};
-
+  };
 
   const resetForm = () => {
     setProjectTitle('');
+    setProjectid('')
     setProjectCategory('');
     setProjectDate('');
     setProjectDescription('');
@@ -323,13 +109,14 @@ const Projects = () => {
     setProjectWebapp('');
     setProjectTags('');
     setMembers([{ name: '', github: '', linkedin: '', img: '' }]);
-    setontop(false); // Reset isActive state
+    setontop(false);
   };
+
 
   const handleEdit = (project) => {
     window.scrollTo(0,0);
     setIsEditing(true);
-    setCurrentProjectId(project.id);
+    setProjectid(project.id);
     setProjectTitle(project.title);
     setProjectCategory(project.category);
     setProjectDate(project.date);
@@ -338,33 +125,46 @@ const Projects = () => {
     setProjectWebapp(project.webapp);
     setProjectTags(project.tags.join(','));
     setMembers(project.member);
-    setontop(project.ontop === 1); // Set isActive state based on existing project data
+    setontop(project.ontop === 1);
   };
+  
 
   const handleUpdate = async (e) => {
     e.preventDefault();
+    setModalType('upload');
+    setModalVisible(true);
 
-    const imageUrl = projectImage ? await uploadImage() : null;
+    const currentProject = projects.find(p => p.id === projectid);
+
+    let imageUrl = currentProject.image; 
+    if (projectImage) {
+      imageUrl = await uploadImage();
+    }
 
     const updatedProject = {
+      id: projectid,
       title: projectTitle,
       category: projectCategory,
       date: projectDate,
       description: projectDescription,
       github: projectGithub,
-      image: imageUrl || projects.find(p => p.id === currentProjectId).image, // Keep old image if no new image uploaded
+      image: imageUrl,
       webapp: projectWebapp,
       tags: projectTags.split(','),
       member: members,
-      ontop: ontop ? 1 : 0, // Add isActive attribute
+      ontop: ontop ? 1 : 0,
     };
 
-    set(dbRef(database, `projects/${currentProjectId}`), updatedProject).then(() => {
+    set(dbRef(database, `projects/${projectid}`), updatedProject).then(() => {
       resetForm();
       setIsEditing(false);
       fetchProjects();
+    }).catch((error) => {
+      console.error('Error updating project:', error);
     });
+    setModalType('success');
   };
+
 
   const uploadImage = async () => {
     const imageRef = storageRef(storage, `projects/${projectImage.name}`);
@@ -374,21 +174,19 @@ const Projects = () => {
 
   const handleDelete = (projectId) => {
     setProjectToDelete(projectId);
-    setShowDeleteModal(true);
   };
 
   const handleDeleteClick = (projectId) => {
     handleDelete(projectId);
+    setModalType('delete');
+    setModalVisible(true);
   };
 
   const confirmDelete = () => {
     if (projectToDelete) {
-      // Get the project's data to retrieve the image URL before deletion
       const projectRef = dbRef(database, `projects/${projectToDelete}`);
       get(projectRef).then((snapshot) => {
         const projectData = snapshot.val();
-  
-        // If the project has an image, delete it from Firebase Storage
         if (projectData && projectData.image) {
           const imageRef = storageRef(storage, projectData.image);
           deleteObject(imageRef)
@@ -399,11 +197,9 @@ const Projects = () => {
               console.error('Error deleting image:', error);
             });
         }
-  
-        // After the image is deleted, delete the project data
         remove(projectRef).then(() => {
-          fetchProjects(); // Refresh the project list
-          setShowDeleteModal(false); // Close the modal
+          fetchProjects();
+          setModalVisible(false);
         });
       });
     }
@@ -429,22 +225,25 @@ const Projects = () => {
   };
 
   const handleDeleteMember = async (index) => {
-    const memberToDelete = members[index];
+    if (members.length > 1) {
+      const memberToDelete = members[index];
   
-    if (memberToDelete.img) {
-      // Delete image from Firebase Storage
-      const imageRef = storageRef(storage, memberToDelete.img);
-      try {
-        await deleteObject(imageRef);
-      } catch (error) {
-        console.error("Error deleting member image: ", error);
+      if (memberToDelete.img) {
+        // Delete image from Firebase Storage
+        const imageRef = storageRef(storage, memberToDelete.img);
+        try {
+          await deleteObject(imageRef);
+        } catch (error) {
+          console.error("Error deleting member image: ", error);
+        }
       }
+
+      // Remove the member from the members array
+      const updatedMembers = members.filter((_, i) => i !== index);
+      setMembers(updatedMembers);
     }
-  
-    // Remove the member from the members array
-    const updatedMembers = members.filter((_, i) => i !== index);
-    setMembers(updatedMembers);
   };
+  
 
   return (
     <Body>
@@ -548,28 +347,206 @@ const Projects = () => {
           ))}
         </ProjectList>
       </Container>
-      <Footer
-        footerData={{
-          name: bioData.name,
-          github: bioData.github,
-          linkedin: bioData.linkedin,
-          insta: bioData.insta,
-        }}
-        links=''
-      />
+      <Footer/>
 
-      {showDeleteModal && (
-        <ModalOverlay>
-          <ModalContent>
-            <h3>Confirm Deletion</h3>
-            <p>Are you sure you want to delete this project?</p>
-            <ModalButton onClick={confirmDelete} bgColor="#f44336">Delete</ModalButton>
-            <ModalButton onClick={() => setShowDeleteModal(false)} bgColor="#4caf50">Cancel</ModalButton>
-          </ModalContent>
-        </ModalOverlay>
-      )}
+      <Modal
+          title={
+            modalType === 'delete' ? "Confirm Deletion" 
+            : modalType === 'upload' ? "Uploading..." 
+            : "Upload Successful"
+          }
+
+          message={
+            modalType === 'delete' ? "Are you sure you want to delete this Project?"
+              : modalType === 'upload' ? "Your data is being uploaded. Please wait." : "Your data has been uploaded successfully!"
+            }
+
+          onFeature={modalType === 'delete' ? confirmDelete : null}
+          onClose={() => setModalVisible(false)}
+          isVisible={modalVisible}
+          showDelete={modalType === 'delete'} 
+        />
     </Body>
   );
 };
 
 export default Projects;
+
+const Body = styled.div`
+  background-color: ${(props) => props.theme.bg};
+  color: ${(props) => props.theme.text_primary};
+`;
+
+const Container = styled.div`
+  padding: 20px;
+  padding-top: 90px;
+  max-width: 1080px;
+  margin: 0 auto;
+`;
+
+const Form = styled.form`
+  display: flex;
+  padding: 0 0 40px 0;
+  flex-direction: column;
+  gap: 20px; 
+`;
+
+const Label = styled.label`
+  font-weight: bold;
+  font-size: 1rem; 
+`;
+
+const Input = styled.input`
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid ${(props) => props.theme.primary};
+  outline: none;
+  font-size: 1rem; 
+`;
+
+const CheckboxHolder = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px; 
+`;
+
+const Checkbox = styled.input`
+  width: 16px;
+  height: 16px; 
+`;
+
+const TextArea = styled.textarea`
+  padding: 12px;
+  border-radius: 5px;
+  border: 1px solid ${(props) => props.theme.primary};
+  outline: none;
+  font-size: 1rem; 
+  resize: vertical; 
+`;
+
+
+const Button = styled.button`
+  padding: 12px 20px; 
+  background-color: ${(props) => props.bgColor || props.theme.button};
+  color: ${(props) => props.theme.white};
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem; 
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    opacity: 0.9;
+  }
+`;
+
+const MemberList = styled.div`
+  display: flex;
+  flex-direction: column; 
+  gap: 15px; 
+  padding: 0 0 40px 0;
+`;
+
+
+const MemberItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px; 
+
+  @media (max-width: 768px) {
+    flex-direction: column; 
+    align-items: flex-start; 
+  }
+`;
+
+const MemberImage = styled.img`
+  width: 50px; 
+  height: 50px; 
+  border-radius: 50%;
+`;
+
+const AddMemberButton = styled(Button)`
+  width: 100%;
+  background-color: ${(props) => props.theme.primary};
+  background-color: #4caf50;
+
+  &:hover{
+    background-color: #388E3C;
+  }
+`;
+
+const ProjectList = styled.div`
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 40px; 
+
+`;
+
+const ProjectCard = styled.div`
+  width: 300px;
+  height: 100%;
+  border: 1px solid ${(props) => props.theme.primary};
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 15px; 
+  padding: 20px; 
+  transition: box-shadow 0.3s;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  @media (max-width: 768px) {
+    padding: 15px; 
+  }
+`;
+
+const ProjectImage = styled.img`
+  width: 100%;
+  object-fit: cover; 
+  border-radius: 8px;
+`;
+
+const ProjectDetails = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+`;
+
+const EditButton = styled(Button)`
+  background-color: #4caf50;
+  width: 100%;
+
+  &:hover{
+    background-color: #388E3C;
+  }
+`;
+
+const DeleteButton = styled(Button)`
+  background-color: #f44336;
+  width: 100%;
+
+  &:hover{
+    background-color: #D32F2F;
+  }
+`;
+
+const Select = styled.select`
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid ${(props) => props.theme.primary};
+  outline: none;
+  font-size: 1rem; /* Consistent font size */
+`;
