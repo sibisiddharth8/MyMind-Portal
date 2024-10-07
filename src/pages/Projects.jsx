@@ -84,10 +84,8 @@ const Projects = () => {
             get(projectsRef).then((snapshot) => {
                 const existingProjects = snapshot.val();
                 
-                // Calculate next ID only for new projects
                 const nextId = existingProjects ? Math.max(...Object.keys(existingProjects).map(id => parseInt(id))) + 1 : 0;
                 
-                // Set the project with the calculated next ID
                 set(dbRef(database, `projects/${nextId}`), { ...newProject, id: nextId }).then(() => {
                     resetForm();
                     fetchProjects();
@@ -211,7 +209,6 @@ const Projects = () => {
       const snapshot = await uploadBytes(imageRef, file);
       const imageUrl = await getDownloadURL(snapshot.ref);
       
-      // Update the members array with the new image URL
       const updatedMembers = members.map((member, i) => 
         i === index ? { ...member, img: imageUrl } : member
       );
@@ -238,7 +235,6 @@ const Projects = () => {
         }
       }
 
-      // Remove the member from the members array
       const updatedMembers = members.filter((_, i) => i !== index);
       setMembers(updatedMembers);
     }
@@ -280,8 +276,6 @@ const Projects = () => {
 
           <Label>Project Image :</Label>
           <Input type="file" accept="image/*" onChange={(e) => setProjectImage(e.target.files[0])}/>
-
-
 
           <Label>Team List :</Label>
           <MemberList>
@@ -325,9 +319,10 @@ const Projects = () => {
         <CheckboxHolder>
           <Label>Show Project on Home Page :</Label>
           <Checkbox type="checkbox" checked={ontop} onChange={() => setontop(!ontop)} />
-          </CheckboxHolder>
+        </CheckboxHolder>
           
-          <Button type="submit">{isEditing ? 'Update Project' : 'Add Project'}</Button>
+        <Button type="submit">{isEditing ? 'Update Project' : 'Add Project'}</Button>
+
         </Form>
 
         <h2>Project List :</h2>
@@ -425,7 +420,6 @@ const TextArea = styled.textarea`
   resize: vertical; 
 `;
 
-
 const Button = styled.button`
   padding: 12px 20px; 
   background-color: ${(props) => props.bgColor || props.theme.button};
@@ -447,7 +441,6 @@ const MemberList = styled.div`
   gap: 15px; 
   padding: 0 0 40px 0;
 `;
-
 
 const MemberItem = styled.div`
   display: flex;
@@ -548,5 +541,5 @@ const Select = styled.select`
   border-radius: 5px;
   border: 1px solid ${(props) => props.theme.primary};
   outline: none;
-  font-size: 1rem; /* Consistent font size */
+  font-size: 1rem;
 `;
