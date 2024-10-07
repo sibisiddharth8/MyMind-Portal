@@ -260,10 +260,6 @@ const Input = styled.input`
   border-radius: 5px;
   border: 1px solid ${(props) => props.theme.primary};
   outline: none;
-
-  @media (max-width: 575px) {
-   margin: 5px;
-  }
 `;
 
 const Select = styled.select`
@@ -288,7 +284,6 @@ const Button = styled.button`
   }
 
   @media (max-width: 575px) {
-    padding: 5px 10px;
     font-size: 14px;
   }
 `;
