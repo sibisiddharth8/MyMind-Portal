@@ -9,10 +9,10 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
   background-color: ${(props) => props.theme.bg};
   padding: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  height: 100dvh;
 
   @media (max-width: 768px) {
     padding: 15px;

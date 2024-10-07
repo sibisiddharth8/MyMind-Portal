@@ -54,7 +54,7 @@ const PageTitle = styled.h1`
   font-weight: 600;
   position: absolute;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-45%);
   white-space: nowrap;
 `;
 

@@ -10,10 +10,8 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
   background-color: ${(props) => props.theme.bg};
-  padding: 40px; /* Increased padding for larger devices */
-  box-sizing: border-box; /* Ensure padding is included in height */
+  height: 100dvh;
 
   @media (max-width: 768px) {
     padding: 20px; /* Adjusted padding for tablet devices */
