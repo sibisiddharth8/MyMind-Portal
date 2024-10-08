@@ -56,15 +56,23 @@ const Skills = () => {
             });
         }
 
+        const skillsInType = skillsList[skillType]?.skills || {};
+
+        // Traverse through all skill IDs and find the largest one
+        const largestId = Object.keys(skillsInType).reduce((maxId, currentId) => {
+            return Math.max(maxId, parseInt(currentId));
+        }, -1);  // Start from -1 to handle the case when there are no skills
+
         const nextIndex = editingSkillId !== null
-            ? editingSkillId
-            : Object.keys(skillsList[skillType]?.skills || {}).length;
+            ? editingSkillId  // If editing, keep the current skill ID
+            : largestId + 1;  // Add to the next ID after the largest one
 
         const skillData = {
             name: skillName,
-            image: imageUrl || skillsList[skillType].skills[nextIndex].image,
+            image: imageUrl || (editingSkillId !== null ? skillsInType[editingSkillId].image : ''),
         };
 
+        // Update or add the skill in the database
         await set(dbRef(database, `skills/${skillType}/skills/${nextIndex}`), skillData);
 
         // Directly update state after adding or editing
@@ -96,7 +104,6 @@ const Skills = () => {
         console.error('No image selected.');
     }
 };
-  
 
 const handleDelete = async () => {
   const skillData = skillsList[skillType].skills[skillToDelete];
@@ -127,6 +134,7 @@ const handleDelete = async () => {
   setModalVisible(false);
   setSkillToDelete(null);  
 };
+
 
 const handleEdit = (skillType, skillId, skill) => {
   window.scrollTo(0, 0);

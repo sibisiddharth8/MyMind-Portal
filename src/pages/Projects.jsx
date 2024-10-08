@@ -72,7 +72,7 @@ const Projects = () => {
 
             const newProject = {
                 title: projectTitle,
-                id:'',
+                id: '',  // id will be assigned below
                 category: projectCategory,
                 date: projectDate,
                 description: projectDescription,
@@ -88,6 +88,7 @@ const Projects = () => {
             get(projectsRef).then((snapshot) => {
                 const existingProjects = snapshot.val();
                 
+                // Determine the next sequential id
                 const nextId = existingProjects ? Math.max(...Object.keys(existingProjects).map(id => parseInt(id))) + 1 : 0;
                 
                 set(dbRef(database, `projects/${nextId}`), { ...newProject, id: nextId }).then(() => {
@@ -96,9 +97,9 @@ const Projects = () => {
                 });
             });
         });
-      setModalType('success');
+        setModalType('success');
     }
-  };
+};
 
   const resetForm = () => {
     setProjectTitle('');
@@ -138,13 +139,13 @@ const Projects = () => {
 
     const currentProject = projects.find(p => p.id === projectid);
 
-    let imageUrl = currentProject.image; 
+    let imageUrl = currentProject.image; // Preserve existing image if not updated
     if (projectImage) {
       imageUrl = await uploadImage();
     }
 
     const updatedProject = {
-      id: projectid,
+      id: projectid,  // Use the original project id
       title: projectTitle,
       category: projectCategory,
       date: projectDate,
@@ -165,7 +166,7 @@ const Projects = () => {
       console.error('Error updating project:', error);
     });
     setModalType('success');
-  };
+};
 
 
   const uploadImage = async () => {
@@ -205,7 +206,7 @@ const Projects = () => {
         });
       });
     }
-  };
+};
 
   const handleMemberImageUpload = async (file, index) => {
     if (file) {

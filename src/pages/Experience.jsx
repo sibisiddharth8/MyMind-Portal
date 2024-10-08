@@ -47,41 +47,59 @@ const Experience = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setModalType('uploading');
+    setModalVisible(true);
+  
+    // Prevent multiple submissions
+    if (isUploading) return;
+    
     setIsUploading(true);
-
-    let imgUrl = newExperience.img;
-    if (selectedImage) {
-      const imgRef = storageRef(storage, `experience/${selectedImage.name}`);
-      const snapshot = await uploadBytes(imgRef, selectedImage);
-      imgUrl = await getDownloadURL(snapshot.ref);
+  
+    try {
+      let imgUrl = newExperience.img;
+  
+      if (selectedImage) {
+        const imgRef = storageRef(storage, `experience/${selectedImage.name}`);
+        const snapshot = await uploadBytes(imgRef, selectedImage);
+        imgUrl = await getDownloadURL(snapshot.ref);
+      }
+  
+      // Convert skills into an array and handle the case of empty skills
+      const skillsArray = newExperience.skills
+        ? newExperience.skills
+            .split(',')
+            .map((skill) => skill.trim()) // Trim spaces
+            .filter((skill) => skill !== '') // Filter out empty entries
+        : [];
+  
+      // Determine the next ID for new experience, or use the existing ID for editing
+      const newId = editingId !== null ? editingId : experiences.length > 0 ? Math.max(...Object.keys(experiences).map(id => Number(id))) + 1 : 0;
+  
+      const experienceData = {
+        ...newExperience,
+        img: imgUrl,
+        skills: skillsArray,
+        id: newId,  // Use the correct ID
+      };
+  
+      const experienceRef = dbRef(database, `experiences/${experienceData.id}`);
+      await set(experienceRef, experienceData);
+  
+      // Reset form and state after successful submission
+      setNewExperience({ company: '', date: '', desc: '', img: '', link: '', role: '', skills: '' });
+      setSelectedImage(null);
+      setEditingId(null);
+  
+      // Show success modal
+      setModalType('success');
+      setModalVisible(true);
+    } catch (error) {
+      console.error('Error uploading experience:', error);
+    } finally {
+      setIsUploading(false); // Reset uploading flag
     }
-
-    // Convert skills into an array and handle the case of empty skills
-    const skillsArray = newExperience.skills
-      ? newExperience.skills
-          .split(',')
-          .map((skill) => skill.trim()) // Trim spaces
-          .filter((skill) => skill !== '') // Filter out empty entries
-      : [];
-
-    const experienceData = {
-      ...newExperience,
-      img: imgUrl,
-      skills: skillsArray, // Use the properly formatted array
-      id: editingId !== null ? editingId : experiences.length,
-    };
-
-    const experienceRef = dbRef(database, `experiences/${experienceData.id}`);
-    await set(experienceRef, experienceData);
-
-    setNewExperience({ company: '', date: '', desc: '', img: '', link: '', role: '', skills: '' });
-    setSelectedImage(null);
-    setEditingId(null);
-
-    setIsUploading(false); 
-    setModalType('success'); 
-    setModalVisible(true); 
   };
+  
 
   const handleEdit = (exp) => {
     window.scrollTo(0, 0);
@@ -105,19 +123,20 @@ const Experience = () => {
 
   const handleDelete = async () => {
     if (!experienceToDelete) return;
-
+  
     const experienceRef = dbRef(database, `experiences/${experienceToDelete.id}`);
     await remove(experienceRef);
-
+  
     if (experienceToDelete.img) {
       const imageRef = storageRef(storage, experienceToDelete.img);
       await deleteObject(imageRef);
     }
-
+  
     // Close the modal after deletion
     setModalVisible(false);
     setExperienceToDelete(null);
   };
+  
 
   return (
     <Body>
