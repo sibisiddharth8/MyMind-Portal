@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import Header from '../components/Header/Header.jsx';
 import Footer from '../components/Footer';
 import Modal from '../components/Modal/Modal.jsx';
+import LinearLoader from '../components/Loaders/LinearLoader.jsx';
 
 const Education = () => {
   const [educations, setEducations] = useState([]);
@@ -23,21 +24,22 @@ const Education = () => {
   const [modalType, setModalType] = useState('');
   const [isUploading, setIsUploading] = useState(false);
   const [educationToDelete, setEducationToDelete] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const educationsRef = dbRef(database, 'education');
     onValue(educationsRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
-        // Convert the object to an array
         const educationList = Object.keys(data).map((key) => ({
-          id: key,  // Use key as id
-          ...data[key],  // Spread the rest of the education data
+          id: key,  
+          ...data[key],  
         }));
         setEducations(educationList);
       } else {
-        setEducations([]);  // No data, set an empty array
+        setEducations([]); 
       }
+      setLoading(false);
     });
   }, []);
   
@@ -139,7 +141,12 @@ const Education = () => {
           <Button type="submit">{editingId !== null ? 'Update Education' : 'Add Education'}</Button>
         </Form>
 
-        {educations.map((edu) => (
+        {loading ? (
+          <LinearLoader 
+            text = "... Loading Education ..."
+          />
+        ) :
+        educations.map((edu) => (
           <Card key={edu.id}>
             <img src={edu.img} alt={`${edu.school} logo`} />
             <Details>

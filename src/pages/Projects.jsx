@@ -9,7 +9,9 @@ import Footer from '../components/Footer';
 import Placeholder from '../images/placeholder.png'
 import Modal from '../components/Modal/Modal.jsx'
 
-const categories = ['Web', 'Deep Learning', 'Machine Learning']; //categories
+import LinearLoader from '../components/Loaders/LinearLoader.jsx';
+
+const categories = ['Web', 'Deep Learning', 'Machine Learning'];
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
@@ -28,6 +30,7 @@ const Projects = () => {
   const [projectToDelete, setProjectToDelete] = useState(null); 
   const [modalVisible, setModalVisible] = useState(false);
   const [modalType, setModalType] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchProjects();
@@ -39,6 +42,7 @@ const Projects = () => {
       const data = snapshot.val();
       const projectsArray = data ? Object.keys(data).map(key => ({ id: key, ...data[key] })) : [];
       setProjects(projectsArray);
+      setLoading(false);
     });
   };
 
@@ -327,7 +331,12 @@ const Projects = () => {
 
         <h2>Project List :</h2>
         <ProjectList>
-          {projects.map((project) => (
+          {loading ? (
+            <LinearLoader
+              text = "... Loading Projects ..."
+            />
+          ) : (
+          projects.map((project) => (
             <ProjectCard key={project.id}>
               <ProjectImage src={project.image} alt={project.title} />
               <ProjectDetails>
@@ -339,7 +348,8 @@ const Projects = () => {
                 <DeleteButton onClick={() => handleDeleteClick(project.id)}>Delete</DeleteButton>
               </ButtonWrapper>
             </ProjectCard>
-          ))}
+          )))
+          }
         </ProjectList>
       </Container>
       <Footer/>
