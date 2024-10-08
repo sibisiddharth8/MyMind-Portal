@@ -1,8 +1,60 @@
-// pages/Login.jsx
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useAuth } from '../AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+
+function Login() {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+    const navigate = useNavigate();
+    const { login } = useAuth(); // Access the login function from AuthContext
+  
+    const handleLogin = () => {
+      const validUsername = process.env.REACT_APP_USERNAME;
+      const validPassword = process.env.REACT_APP_PASSWORD;
+
+      if (username === validUsername && password === validPassword) {
+        login(); // Update authentication state
+        navigate('/Home'); // Redirect to the portal
+      } else {
+        setErrorMessage('Invalid credentials. Please try again.');
+      }
+    };
+
+    const togglePasswordVisibility = () => {
+      setShowPassword(!showPassword);
+    };
+  
+    return (
+      <Container>
+        <Title>MyMind | Portal</Title>
+        <Input
+          type="text"
+          placeholder="Username / Email"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <InputContainer>
+          <Input
+            type={showPassword ? 'text' : 'password'} 
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <ToggleIcon onClick={togglePasswordVisibility}>
+            {showPassword ? <VisibilityOff /> : <Visibility />}
+          </ToggleIcon>
+        </InputContainer>
+        {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+        <Button onClick={handleLogin}>Login</Button>
+      </Container>
+    );
+}
+
+export default Login;
 
 const Container = styled.div`
   display: flex;
@@ -25,7 +77,7 @@ const Container = styled.div`
 
 const Title = styled.h1`
   color: ${(props) => props.theme.text_primary};
-  margin-bottom: 30px; /* Increased margin for better spacing */
+  margin-bottom: 30px; 
   font-size: 2.5rem;
 
   @media (max-width: 768px) {
@@ -38,13 +90,19 @@ const Title = styled.h1`
   }
 `;
 
+const InputContainer = styled.div`
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+`;
+
 const Input = styled.input`
+  max-width: 400px;
   padding: 15px;
-  margin: 15px 0; /* Increased margin for better spacing */
+  margin: 15px 0;
   border: 2px solid ${(props) => props.theme.primary};
   border-radius: 5px;
   width: 100%;
-  max-width: 400px;
   font-size: 1rem;
   transition: border-color 0.3s ease;
 
@@ -64,19 +122,29 @@ const Input = styled.input`
   }
 `;
 
+const ToggleIcon = styled.div`
+  position: absolute;
+  width: 20px;
+  top: 53.5%;
+  right: 15px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: ${({ theme }) => theme.bg};
+`;
+
 const Button = styled.button`
-  padding: 15px;
+  padding: 10px 15px;
   background-color: ${(props) => props.theme.primary};
   color: ${(props) => props.theme.white};
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 1rem;
-  margin-top: 20px; /* Added margin for spacing above the button */
+  margin-top: 20px;
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: ${(props) => props.theme.button};
+    opacity: 0.9;
   }
 
   @media (max-width: 768px) {
@@ -99,45 +167,3 @@ const ErrorMessage = styled.p`
     font-size: 0.8rem;
   }
 `;
-
-function Login() {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
-    const navigate = useNavigate();
-    const { login } = useAuth(); // Access the login function from AuthContext
-  
-    const handleLogin = () => {
-      const validUsername = process.env.REACT_APP_USERNAME;
-      const validPassword = process.env.REACT_APP_PASSWORD;
-
-      if (username === validUsername && password === validPassword) {
-        login(); // Update authentication state
-        navigate('/Home'); // Redirect to the portal
-      } else {
-        setErrorMessage('Invalid credentials. Please try again.');
-      }
-    };
-  
-    return (
-      <Container>
-        <Title>MyMind | Portal</Title>
-        <Input
-          type="text"
-          placeholder="Username / Email"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <Input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-        <Button onClick={handleLogin}>Login</Button>
-      </Container>
-    );
-}
-
-export default Login;

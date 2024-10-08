@@ -301,7 +301,6 @@ const InputField = styled.input`
 
   &:focus {
     outline: none;
-    border-width: 2px;
   }
 
   @media (max-width: 768px) {
@@ -313,7 +312,6 @@ const InputField = styled.input`
 const TextArea = styled.textarea`
   padding: 0.75rem;
   background-color: ${({ theme }) => theme.text_primary};
-  box-shadow: rgba(23, 92, 230, 0.15) 0px 4px 24px;
   border-radius: 4px;
   border-color: ${({ theme }) => theme.primary};
   font-size: 16px;

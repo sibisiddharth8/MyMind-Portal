@@ -7,6 +7,8 @@ import Header from '../components/Header/Header.jsx';
 import Footer from '../components/Footer';
 import Modal from '../components/Modal/Modal.jsx';
 
+import LinearLoader from '../components/Loaders/LinearLoader.jsx';
+
 const Skills = () => {
   const [skillName, setSkillName] = useState('');
   const [skillType, setSkillType] = useState('0');
@@ -16,7 +18,7 @@ const Skills = () => {
   const [editingSkillId, setEditingSkillId] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalType, setModalType] = useState('');
-  const [skillToDelete, setSkillToDelete] = useState(null);  // State for skill to delete
+  const [skillToDelete, setSkillToDelete] = useState(null);  
 
   useEffect(() => {
     const fetchSkills = () => {
@@ -190,7 +192,9 @@ const handleEdit = (skillType, skillId, skill) => {
         </Form>
 
         {loading ? (
-          <div>Loading...</div>
+          <LinearLoader
+            text = "... Loading Skills ..." 
+          />
         ) : (
           Object.keys(skillsList).map((type) => (
             <SkillList key={type}>
@@ -256,16 +260,16 @@ const Label = styled.label`
 `;
 
 const Input = styled.input`
-  padding: 10px;
+  padding: 0.75rem;
   border-radius: 5px;
-  border: 1px solid ${(props) => props.theme.primary};
+  border: 1.5px solid ${(props) => props.theme.primary};
   outline: none;
 `;
 
 const Select = styled.select`
-  padding: 10px;
+  padding: 0.75rem;
   border-radius: 5px;
-  border: 1px solid ${(props) => props.theme.primary};
+  border: 1.5px solid ${(props) => props.theme.primary};
   outline: none;
 `;
 
@@ -279,7 +283,6 @@ const Button = styled.button`
   transition: background-color 0.3s ease, transform 0.2s ease;
 
   &:hover {
-    background-color: ${(props) => props.hoverColor || props.theme.primary};
     opacity: 0.9;
   }
 

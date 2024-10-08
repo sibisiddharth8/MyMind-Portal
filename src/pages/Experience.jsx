@@ -7,6 +7,8 @@ import Header from '../components/Header/Header.jsx';
 import Footer from '../components/Footer';
 import Modal from '../components/Modal/Modal.jsx';
 
+import LinearLoader from '../components/Loaders/LinearLoader.jsx';
+
 const Experience = () => {
   const [experiences, setExperiences] = useState([]);
   const [newExperience, setNewExperience] = useState({
@@ -24,12 +26,14 @@ const Experience = () => {
   const [modalType, setModalType] = useState('');
   const [isUploading, setIsUploading] = useState(false);
   const [experienceToDelete, setExperienceToDelete] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const experiencesRef = dbRef(database, 'experiences');
     onValue(experiencesRef, (snapshot) => {
       const data = snapshot.val() || [];
       setExperiences(data);
+      setLoading(false);
     });
   }, []);
 
@@ -145,21 +149,27 @@ const Experience = () => {
           <Button type="submit">{editingId !== null ? 'Update Experience' : 'Add Experience'}</Button>
         </Form>
 
-        {/* Experience Cards */}
-        {experiences.map((exp) => (
-          <Card key={exp.id}>
-            <img src={exp.img} alt={`${exp.company} logo`} />
-            <Details>
-              <Title>{exp.company}</Title>
-              <Role>{exp.role}</Role>
-              <p>{exp.date}</p>
-            </Details>
-            <Actions>
-              <button className="edit-btn" onClick={() => handleEdit(exp)}>Edit</button>
-              <button className="delete-btn" onClick={() => openDeleteModal(exp)}>Delete</button>
-            </Actions>
-          </Card>
-        ))}
+        {loading ? (
+          <LinearLoader
+            text = "... Loading Experience ..."
+          />
+        ) : (
+          experiences.map((exp) => (
+            <Card key={exp.id}>
+              <img src={exp.img} alt={`${exp.company} logo`} />
+              <Details>
+                <Title>{exp.company}</Title>
+                <Role>{exp.role}</Role>
+                <p>{exp.date}</p>
+              </Details>
+              <Actions>
+                <button className="edit-btn" onClick={() => handleEdit(exp)}>Edit</button>
+                <button className="delete-btn" onClick={() => openDeleteModal(exp)}>Delete</button>
+              </Actions>
+            </Card>
+          ))
+        )
+        }
 
         {/* Reusable Modal */}
         <Modal 
@@ -285,6 +295,7 @@ const Input = styled.input`
 
 const Button = styled.button`
   padding: 10px;
+  border-radius: 5px;
   background-color: ${(props) => props.theme.button};
   border: none;
   color: ${(props) => props.theme.white};

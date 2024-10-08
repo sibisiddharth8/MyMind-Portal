@@ -1,8 +1,7 @@
-// Portal.jsx
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Link, useNavigate } from 'react-router-dom'; // Ensure useNavigate is imported
-import { useAuth } from '../AuthContext'; // Import AuthContext
+import { Link, useNavigate } from 'react-router-dom'; 
+import { useAuth } from '../AuthContext';
 
 // Styled components for the portal page
 const Container = styled.div`
@@ -15,10 +14,6 @@ const Container = styled.div`
 
   @media (max-width: 768px) {
     padding: 20px; /* Adjusted padding for tablet devices */
-  }
-
-  @media (max-width: 575px) {
-    padding: 15px; /* Further reduced padding for mobile devices */
   }
 `;
 
@@ -52,7 +47,7 @@ const NavButton = styled(Link)`
   color: ${(props) => props.theme.white};
   text-decoration: none;
   text-align: center;
-  border-radius: 8px; /* Increased border radius for softer look */
+  border-radius: 4px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Enhanced shadow for depth */
   transition: background-color 0.3s ease, transform 0.2s ease;
 
@@ -71,19 +66,20 @@ const NavButton = styled(Link)`
 `;
 
 const LogoutButton = styled.button`
-  padding: 12px;
-  font-size: 1.2rem;
-  background-color: ${(props) => props.theme.primary};
+  padding: 10px 15px;
+  font-size: 1rem;
+  background-color: #f44336;
   color: ${(props) => props.theme.white};
   border: none;
-  border-radius: 8px;
+  border-radius: 4px;
   cursor: pointer;
   margin-top: 30px; /* Increased margin for spacing above the button */
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: background-color 0.3s ease-in-out, transform 0.2s ease;
+  border: 1px solid #f44336;
 
   &:hover {
-    background-color: ${(props) => props.theme.button};
-    transform: scale(1.05); /* Slight scale effect on hover */
+    background-color: ${(props) => props.theme.bg};
+    color: #f44336;
   }
 
   @media (max-width: 768px) {
