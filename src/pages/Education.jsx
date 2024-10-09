@@ -54,32 +54,51 @@ const Education = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsUploading(true);
-
+  
+    // Prevent multiple submissions
+    if (isUploading) return;
+  
+    setIsUploading(true); // Set uploading state to true
+  
     let imgUrl = neweducation.img;
+  
+    // Handle image upload if a new image is selected
     if (selectedImage) {
       const imgRef = storageRef(storage, `education/${selectedImage.name}`);
       const snapshot = await uploadBytes(imgRef, selectedImage);
       imgUrl = await getDownloadURL(snapshot.ref);
     }
-
+  
+    // Generate a new id based on the current list of education entries
+    const newId = editingId !== null 
+      ? editingId 
+      : educations.length > 0 
+        ? Math.max(...educations.map(edu => Number(edu.id))) + 1 
+        : 0;
+  
+    // Create a new entry or update the existing one
     const educationData = {
       ...neweducation,
       img: imgUrl,
-      id: editingId !== null ? editingId : educations.length,
+      id: newId,
     };
-
+  
+    // Save to Firebase Database
     const educationRef = dbRef(database, `education/${educationData.id}`);
     await set(educationRef, educationData);
-
+  
+    // Reset form and states after submission
     setNeweducation({ date: '', degree: '', grade: '', desc: '', img: '', school: '' });
     setSelectedImage(null);
     setEditingId(null);
-
-    setIsUploading(false); 
-    setModalType('success'); 
-    setModalVisible(true); 
+    setIsUploading(false); // Set uploading state to false
+  
+    // Display success modal
+    setModalType('success');
+    setModalVisible(true);
   };
+  
+  
 
   const handleEdit = (edu) => {
     window.scrollTo(0, 0);
@@ -277,7 +296,7 @@ const Label = styled.label`
 `;
 
 const Input = styled.input`
-  padding: 10px;
+  padding: 0.75rem;
   border-radius: 5px;
   border: 1px solid ${(props) => props.theme.primary};
 `;

@@ -307,7 +307,7 @@ const Label = styled.label`
 `;
 
 const Input = styled.input`
-  padding: 10px;
+  padding: 0.75rem;
   border-radius: 5px;
   border: 1px solid ${(props) => props.theme.primary};
 `;

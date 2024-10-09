@@ -404,7 +404,7 @@ const Label = styled.label`
 
 const Input = styled.input`
   width: 100%;
-  padding: 10px;
+  padding: 0.75rem;
   border-radius: 5px;
   border: 1px solid ${(props) => props.theme.primary};
   outline: none;
@@ -548,7 +548,7 @@ const DeleteButton = styled(Button)`
 `;
 
 const Select = styled.select`
-  padding: 10px;
+  padding: 0.75rem;
   border-radius: 5px;
   border: 1px solid ${(props) => props.theme.primary};
   outline: none;
