@@ -22,7 +22,7 @@ function Login() {
             await signInWithEmailAndPassword(auth, email, password);
             navigate('/Home');
         } catch (error) {
-            setErrorMessage('Invalid credentials or unable to sign in. Please try again.');
+            setErrorMessage('Incorrect Username / Password. Try Again !');
             console.error('Error logging in:', error.message);
         } finally {
             setIsSigningIn(false);
@@ -55,11 +55,25 @@ function Login() {
             </InputContainer>
             {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
             <Button onClick={handleLogin} disabled={isSigningIn}>
-                {isSigningIn ? 'Signing in...' : 'Login'}
+                {isSigningIn ? <Loader /> : 'Login'}
             </Button>
         </Container>
     );
 }
+
+const Loader = styled.div`
+    border: 3px solid ${(props) => props.theme.primary}; 
+    border-top: 3px solid ${(props) => props.theme.white}; 
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+`;
 
 export default Login;
 
