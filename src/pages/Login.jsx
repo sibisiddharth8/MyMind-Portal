@@ -171,6 +171,7 @@ const Button = styled.button`
 `;
 
 const ErrorMessage = styled.p`
+  text-align: center;
   color: red;
   margin-top: 10px;
   font-size: 0.9rem;
