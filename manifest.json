@@ -1,25 +1,44 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "name": "MyMind - Sibi's Portal",
+  "short_name": "MyMind | Portal",
+  "start_url": "/MyMind-Portal/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "id": "Sibi-Siddharth-S",
+  "lang": "en-US",
+  "description": "MyMind Portal is a dynamic platform for managing and updating the Bio, Skills, Experience, Projects, and Education seamlessly.",
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "src": "Icons/MyMind-Portal192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
     },
     {
-      "src": "logo192.png",
-      "type": "image/png",
-      "sizes": "192x192"
+      "src": "Icons/MyMind-Portal256x256.png",
+      "sizes": "256x256",
+      "type": "image/png"
     },
     {
-      "src": "logo512.png",
-      "type": "image/png",
-      "sizes": "512x512"
+      "src": "Icons/MyMind-Portal300x300.png",
+      "sizes": "300x300",
+      "type": "image/png"
+    },
+    {
+      "src": "Icons/MyMind-Portal350x350.png",
+      "sizes": "350x350",
+      "type": "image/png"
+    },
+    {
+      "src": "Icons/MyMind-Portal384x384.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "Icons/MyMind-Portal512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
     }
-  ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  ]
 }
