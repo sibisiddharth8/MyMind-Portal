@@ -1,7 +1,52 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Link, useNavigate } from 'react-router-dom'; 
-import { useAuth } from '../AuthContext';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../AuthContext'; // Use the custom hook for authentication
+
+function Portal() {
+  const [modalOpen, setModalOpen] = useState(false);
+  const { logout } = useAuth(); // Use the logout function from AuthContext
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout()
+      .then(() => {
+        setModalOpen(false); // Close the modal
+        navigate('/'); // Navigate to the login page
+      })
+      .catch((error) => {
+        console.error("Logout Error:", error); // Handle any errors that occur
+      });
+  };
+
+  return (
+    <Container>
+      <Title>Welcome to MyMind - Portal</Title>
+      <ButtonContainer>
+        <NavButton to="/Bio">Bio</NavButton>
+        <NavButton to="/Skills">Skills</NavButton>
+        <NavButton to="/Experience">Experience</NavButton>
+        <NavButton to="/Projects">Projects</NavButton>
+        <NavButton to="/Education">Education</NavButton>
+      </ButtonContainer>
+      <LogoutButton onClick={() => setModalOpen(true)}>Logout</LogoutButton>
+
+      {/* Modal for Logout Confirmation */}
+      {modalOpen && (
+        <Overlay>
+          <ModalContainer>
+            <h2>Are you sure you want to logout?</h2>
+            <ModalButton onClick={handleLogout}>Yes, Logout</ModalButton>
+            <ModalButton onClick={() => setModalOpen(false)}>Cancel</ModalButton>
+          </ModalContainer>
+        </Overlay>
+      )}
+    </Container>
+  );
+}
+
+export default Portal;
+
 
 // Styled components for the portal page
 const Container = styled.div`
@@ -140,42 +185,3 @@ const ModalButton = styled.button`
     transform: scale(1.05); /* Slight scale effect on hover */
   }
 `;
-
-function Portal() {
-  const [modalOpen, setModalOpen] = useState(false);
-  const navigate = useNavigate(); // Initialize useNavigate
-  const { logout } = useAuth(); // Access the logout function from AuthContext
-
-  const handleLogout = () => {
-    logout(); // Call the logout function
-    setModalOpen(false); // Close the modal
-    navigate('/'); // Navigate to the login page
-  };
-
-  return (
-    <Container>
-      <Title>Welcome to MyMind - Portal</Title>
-      <ButtonContainer>
-        <NavButton to="/Bio">Bio</NavButton>
-        <NavButton to="/Skills">Skills</NavButton>
-        <NavButton to="/Experience">Experience</NavButton>
-        <NavButton to="/Projects">Projects</NavButton>
-        <NavButton to="/Education">Education</NavButton>
-      </ButtonContainer>
-      <LogoutButton onClick={() => setModalOpen(true)}>Logout</LogoutButton>
-
-      {/* Modal for Logout Confirmation */}
-      {modalOpen && (
-        <Overlay>
-          <ModalContainer>
-            <h2>Are you sure you want to logout?</h2>
-            <ModalButton onClick={handleLogout}>Yes, Logout</ModalButton>
-            <ModalButton onClick={() => setModalOpen(false)}>Cancel</ModalButton>
-          </ModalContainer>
-        </Overlay>
-      )}
-    </Container>
-  );
-}
-
-export default Portal;

@@ -1,56 +1,63 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useAuth } from '../AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../FirebaseConfig'; 
+import { useAuth } from '../AuthContext.js';
 
 function Login() {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState(''); 
     const [password, setPassword] = useState('');
+    const [isSigningIn, setIsSigningIn] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
-    const { login } = useAuth(); // Access the login function from AuthContext
-  
-    const handleLogin = () => {
-      const validUsername = process.env.REACT_APP_USERNAME;
-      const validPassword = process.env.REACT_APP_PASSWORD;
 
-      if (username === validUsername && password === validPassword) {
-        login(); // Update authentication state
-        navigate('/Home'); // Redirect to the portal
-      } else {
-        setErrorMessage('Invalid credentials. Please try again.');
-      }
+    const handleLogin = async () => {
+        setIsSigningIn(true);
+        setErrorMessage('');
+        
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+            navigate('/Home');
+        } catch (error) {
+            setErrorMessage('Invalid credentials or unable to sign in. Please try again.');
+            console.error('Error logging in:', error.message);
+        } finally {
+            setIsSigningIn(false);
+        }
     };
 
     const togglePasswordVisibility = () => {
-      setShowPassword(!showPassword);
+        setShowPassword(!showPassword);
     };
-  
+
     return (
-      <Container>
-        <Title>MyMind | Portal</Title>
-        <Input
-          type="text"
-          placeholder="Username / Email"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <InputContainer>
-          <Input
-            type={showPassword ? 'text' : 'password'} 
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <ToggleIcon onClick={togglePasswordVisibility}>
-            {showPassword ? <VisibilityOff /> : <Visibility />}
-          </ToggleIcon>
-        </InputContainer>
-        {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-        <Button onClick={handleLogin}>Login</Button>
-      </Container>
+        <Container>
+            <Title>MyMind | Portal</Title>
+            <Input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+            />
+            <InputContainer>
+                <Input
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+                <ToggleIcon onClick={togglePasswordVisibility}>
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                </ToggleIcon>
+            </InputContainer>
+            {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+            <Button onClick={handleLogin} disabled={isSigningIn}>
+                {isSigningIn ? 'Signing in...' : 'Login'}
+            </Button>
+        </Container>
     );
 }
 
@@ -77,7 +84,7 @@ const Container = styled.div`
 
 const Title = styled.h1`
   color: ${(props) => props.theme.text_primary};
-  margin-bottom: 30px; 
+  margin-bottom: 30px;
   font-size: 2.5rem;
 
   @media (max-width: 768px) {
@@ -145,6 +152,11 @@ const Button = styled.button`
 
   &:hover {
     opacity: 0.9;
+  }
+
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
   }
 
   @media (max-width: 768px) {

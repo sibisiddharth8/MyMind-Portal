@@ -1,31 +1,42 @@
-// AuthContext.js
-import React, { createContext, useState, useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { auth } from './FirebaseConfig';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 
-const AuthContext = createContext();
+const AuthContext = React.createContext();
 
-export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    // Check localStorage on initialization
-    return localStorage.getItem('isAuthenticated') === 'true';
-  });
+export function useAuth() {
+  return useContext(AuthContext);
+}
 
-  const login = () => {
-    setIsAuthenticated(true);
-    localStorage.setItem('isAuthenticated', 'true'); // Save the authentication status
-  };
+export function AuthProvider({ children }) {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsAuthenticated(true);
+      } else {
+        setIsAuthenticated(false);
+      }
+      setLoading(false);
+    });
+
+    return unsubscribe;
+  }, []);
 
   const logout = () => {
-    setIsAuthenticated(false);
-    localStorage.removeItem('isAuthenticated'); // Remove the authentication status
+    return signOut(auth);
+  };
+
+  const value = {
+    isAuthenticated,
+    logout,
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
-      {children}
+    <AuthContext.Provider value={value}>
+      {!loading && children}
     </AuthContext.Provider>
   );
-};
-
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
+}
