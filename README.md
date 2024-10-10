@@ -1,70 +1,108 @@
-# Getting Started with Create React App
+# **MyMind | Portal** 🚀
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Welcome to **MyMind | Portal** 🎨, your one-stop solution for dynamically managing and updating the **Bio**, **Skills**, **Experience**, **Projects**, and **Education** sections of your personal portfolio. Designed with **simplicity** and **efficiency** in mind, this portal lets you keep your portfolio content fresh and up to date.
 
-## Available Scripts
+🔗 Access the portal here: [MyMind | Portal](http://localhost:3000/MyMind-Portal/)
 
-In the project directory, you can run:
+🌐 Check out the live portfolio: [MyMind | Portfolio](https://sibisiddharth8.github.io/portfolio-react/)
 
-### `npm start`
+## **Key Features** ✨
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### 1. **Google Authentication** 🔒
+- **Secure** login via Google Authentication.
+- The login page includes:
+  - **Heading:** MyMind | Portal
+  - **Inputs:** Email and Password (with a show/hide toggle 👁️)
+  - **Login Button** to proceed to the portal.
+  
+### 2. **Customizable Pages** 🛠️
+Upon logging in, you are greeted with a **Welcome Message** 🎉 and given options to manage the following pages:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+#### **Bio** 📝
+- Edit and save your:
+  - **Name** ✍️
+  - **Description** 🗒️
+  - **Roles** 💼
+  - **Profile Picture** 📸
+  - **GitHub URL** 🔗
+  - **LinkedIn URL** 🔗
+  - **Instagram URL** 📷
+  - **Resume** (with upload functionality 📄)
+- Delete all bio data with the **Delete Button** 🗑️.
 
-### `npm test`
+#### **Skills** 🛠️
+- Add, edit, or delete skills.
+- Inputs include:
+  - **Skill Name** 💡
+  - **Skill Type** (Frontend, Backend, AI/ML, Others) 🖥️
+  - **Upload Skill Image** 🖼️
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### **Experience** 💼
+- Add, edit, or delete experiences.
+- Experience is displayed as cards 🃏 with **Edit** and **Delete** options.
+- Input fields include:
+  - **Company Name** 🏢
+  - **Date** 📅
+  - **Role** 👔
+  - **Description** 📝
+  - **Company Link** 🔗
+  - **Skills Gained** 💡
+  - **Company Logo** 🏙️
 
-### `npm run build`
+#### **Projects** 💻
+- Manage projects with options to **add**, **edit**, or **delete**.
+- Projects are displayed as cards 🃏 with:
+  - **Title** 🏷️
+  - **Category** (Web, Deep Learning, Machine Learning, etc.) 📂
+  - **Date** 📅
+  - **Description** 📝
+  - **GitHub URL** 🔗
+  - **Web App URL** 🌐
+  - **Tags** 🏷️
+  - **Project Image** 🖼️
+  - **Team Members** 👥 (add/delete team members with inputs for their name, GitHub URL, LinkedIn URL, profile picture)
+  - **Checkbox** to "Show Project on Home Page" 🏠 of the portfolio.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#### **Education** 🎓
+- Manage education with options to **add**, **edit**, or **delete**.
+- Displayed as cards 🃏 with edit and delete features.
+- Input fields include:
+  - **School/College Name** 🏫
+  - **Degree** 🎓
+  - **Date** 📅
+  - **Grade** 📊
+  - **Description** 📝
+  - **School/College Logo** 🏫
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 3. **Portal Page** 🏠
+After login, navigate the portal using:
+- **Five Buttons** 🔘 leading to the respective pages (Bio, Skills, Experience, Projects, Education)
+- **Logout Button** 🚪 to securely log out.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 4. **Reusable Components** 🔁
+- **Header** 🔝: Includes navigation back to the portal.
+- **Footer** 🔻: Includes the MyMind | Portfolio logo, your name, and social icons for **GitHub**, **LinkedIn**, and **Instagram**, along with a copyright message.
 
-### `npm run eject`
+### 5. **Modals and Loaders** ⏳
+- **Confirmation modals** 🛑 to prevent accidental deletions.
+- **Loaders** ⏳ for a smooth user experience during data and image uploads.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 6. **Responsive Design** 📱💻
+- The entire portal is optimized for both desktop and mobile use, providing a seamless experience across devices.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 7. **PWA Support** 📲
+- The portal can be installed as a web app with a custom icon via the `manifest.json`.
+- Includes **meta tags**, **Open Graph (OG) tags**, and **Twitter tags** 🐦 for SEO optimization and social media integration.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## **Tech Stack** 🛠️
+- **Frontend**: React.js, Tailwind CSS 🎨
+- **Hosting**: GitHub Pages 🖥️
+- **Backend**: Firebase (Realtime Database for data, Storage for images, and Authentication for login) 🔥
+- **Authentication**: Google Sign-In 🔒
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## **Collaboration** 🤝
+We are open to contributions! If you're interested in collaborating or enhancing this project, feel free to **fork** this repository 🍴 and submit a **pull request** 🔄. Let's build something great together!
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
