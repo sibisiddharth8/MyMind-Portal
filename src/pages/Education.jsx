@@ -307,6 +307,7 @@ const Button = styled.button`
   border: none;
   color: ${(props) => props.theme.white};
   cursor: pointer;
+  border-radius: 5px;
 
   &:hover {
     background-color: ${(props) => props.theme.primary};
