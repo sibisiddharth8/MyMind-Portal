@@ -2,7 +2,7 @@
 
 Welcome to **MyMind | Portal** 🎨, your one-stop solution for dynamically managing and updating the **Bio**, **Skills**, **Experience**, **Projects**, and **Education** sections of your personal portfolio. Designed with **simplicity** and **efficiency** in mind, this portal lets you keep your portfolio content fresh and up to date.
 
-🔗 Access the portal here: [MyMind | Portal](http://localhost:3000/MyMind-Portal/)
+🔗 Access the portal here: [MyMind | Portal](https://sibisiddharth8.github.io/MyMind-Portal/)
 
 🌐 Check out the live portfolio: [MyMind | Portfolio](https://sibisiddharth8.github.io/portfolio-react/)
 
