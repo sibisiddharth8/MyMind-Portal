@@ -14,6 +14,15 @@ Welcome to **MyMind | Portal** 🎨, your one-stop solution for dynamically mana
   - **Heading:** MyMind | Portal
   - **Inputs:** Email and Password (with a show/hide toggle 👁️)
   - **Login Button** to proceed to the portal.
+
+  **Desktop View:**
+
+  <img src="./Readme-images/Desktop/login Page Sibi Siddharth S MyMind Portal.png" alt="Login Page - Desktop" width="90%" />
+
+
+  **Mobile View:**
+
+  <img src="./Readme-images/Mobile/Login Page.jpeg" alt="Login Page - Mobile" width="30%" />
   
 ### 2. **Customizable Pages** 🛠️
 Upon logging in, you are greeted with a **Welcome Message** 🎉 and given options to manage the following pages:
