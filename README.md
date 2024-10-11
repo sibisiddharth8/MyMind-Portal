@@ -17,7 +17,7 @@ Welcome to **MyMind | Portal** 🎨, your one-stop solution for dynamically mana
 
   **Desktop View:**
 
-  <img src="./Readme-images/Desktop/login Page Sibi Siddharth S MyMind Portal.png" alt="Login Page - Desktop" width="90%" />
+  <img src="./Readme-images/Desktop/login Page Sibi Siddharth S MyMind Portal.png" alt="Login Page - Desktop" width="100%" />
 
 
   **Mobile View:**
@@ -38,6 +38,19 @@ Upon logging in, you are greeted with a **Welcome Message** 🎉 and given optio
   - **Instagram URL** 📷
   - **Resume** (with upload functionality 📄)
 - Delete all bio data with the **Delete Button** 🗑️.
+
+  **Desktop View:**
+
+  <img src="./Readme-images/Desktop/Bio Page/Bio Page-1 Sibi Siddharth S MyMind Portal.png" alt="Bio Page - Desktop" width="100%" />
+
+
+  **Mobile View:**
+
+<div style="display: flex; justify-content: space-evenly;">
+  <img src="./Readme-images/Mobile/Bio Page//Bio Page -1.jpeg" alt="Bio Page - Mobile" width="30%" />
+  <img src="./Readme-images/Mobile/Bio Page//Bio Page -2.jpeg" alt="Bio Page - Mobile" width="30%" />
+</div>
+
 
 #### **Skills** 🛠️
 - Add, edit, or delete skills.
