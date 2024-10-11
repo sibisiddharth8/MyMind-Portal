@@ -49,6 +49,7 @@ Upon logging in, you are greeted with a **Welcome Message** 🎉 and given optio
 <div style="display: flex; justify-content: space-evenly;">
   <img src="./Readme-images/Mobile/Bio Page//Bio Page -1.jpeg" alt="Bio Page - Mobile" width="30%" />
   <img src="./Readme-images/Mobile/Bio Page//Bio Page -2.jpeg" alt="Bio Page - Mobile" width="30%" />
+  <img src="./Readme-images/Mobile/Modals/Success Modal.jpeg" alt="Bio Page - Mobile" width="30%" />
 </div>
 
 
