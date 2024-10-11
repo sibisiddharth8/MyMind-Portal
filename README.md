@@ -48,9 +48,9 @@ Upon logging in, you are greeted with a **Welcome Message** 🎉 and given optio
 
 <table style="width: 100%; text-align: center;">
   <tr>
-    <td><img src="./Readme-images/Mobile/Bio Page//Bio Page -1.jpeg" alt="Bio Page - Mobile" width="30%" /></td>
-    <td><img src="./Readme-images/Mobile/Bio Page//Bio Page -2.jpeg" alt="Bio Page - Mobile" width="30%" /></td>
-    <td><img src="./Readme-images/Mobile/Modals/Success Modal.jpeg" alt="Success Modal - Mobile" width="30%" /></td>
+    <td><img src="./Readme-images/Mobile/Bio Page//Bio Page -1.jpeg" alt="Bio Page - Mobile" width="100%" /></td>
+    <td><img src="./Readme-images/Mobile/Bio Page//Bio Page -2.jpeg" alt="Bio Page - Mobile" width="100%" /></td>
+    <td><img src="./Readme-images/Mobile/Modals/Success Modal.jpeg" alt="Success Modal - Mobile" width="100%" /></td>
   </tr>
 </table>
 
