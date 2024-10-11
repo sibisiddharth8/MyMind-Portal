@@ -46,7 +46,7 @@ Upon logging in, you are greeted with a **Welcome Message** 🎉 and given optio
 
   **Mobile View:**
 
-<div style="display: flex; justify-content: center; gap:10px">
+<div style="margin-left: auto; margin-right: auto;">
   <img src="./Readme-images/Mobile/Bio Page//Bio Page -1.jpeg" alt="Bio Page - Mobile" width="30%" />
   <img src="./Readme-images/Mobile/Bio Page//Bio Page -2.jpeg" alt="Bio Page - Mobile" width="30%" />
   <img src="./Readme-images/Mobile/Modals/Success Modal.jpeg" alt="Bio Page - Mobile" width="30%" />
