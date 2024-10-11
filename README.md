@@ -245,6 +245,17 @@ After login, navigate the portal using:
 - **Confirmation modals** 🛑 to prevent accidental deletions.
 - **Loaders** ⏳ for a smooth user experience during data and image uploads.
 
+  **Mobile View:**
+
+<table style="width: 100%; text-align: center;">
+  <tr>
+    <td><img src="./Readme-images/Mobile/Modals/Uploading Modal.jpeg" alt="MyMind Portal Modals" width="100%" /></td>
+    <td><img src="./Readme-images/Mobile/Modals/Success Modal.jpeg" alt="MyMind Portal Modals" width="100%" /></td>
+    <td><img src="./Readme-images/Mobile/Modals/Delete Modal.jpeg" alt="MyMind Portal Modals" width="100%" /></td>
+    <td><img src="./Readme-images/Mobile/Skills Page/Skills Page-0.jpeg" alt="MyMind Portal Loaders" width="100%" /></td>
+  </tr>
+</table>
+
 ### 6. **Responsive Design** 📱💻
 - The entire portal is optimized for both desktop and mobile use, providing a seamless experience across devices.
 
