@@ -15,14 +15,31 @@ Welcome to **MyMind | Portal** 🎨, your one-stop solution for dynamically mana
   - **Inputs:** Email and Password (with a show/hide toggle 👁️)
   - **Login Button** to proceed to the portal.
 
-  **Desktop View:**
+**Desktop View:**
 
-  <img src="./Readme-images/Desktop/login Page Sibi Siddharth S MyMind Portal.png" alt="Login Page - Desktop" width="100%" />
+<table style="width: 100%; text-align: center;">
+  <tr>
+    <td><img src="./Readme-images/Desktop/Login Page//login Page-1 Sibi Siddharth S MyMind Portal.png" alt="MyMind Portal Login Page" width="100%" /></td>
+    <td>
+  </tr>
+</table>
+<table style="width: 100%; text-align: center;">
+  <tr>
+    <td><img src="./Readme-images/Desktop/Login Page//login Page-2 Sibi Siddharth S MyMind Portal.png" alt="MyMind Portal Login Page" width="100%" /></td>
+    <td>
+  </tr>
+</table>
 
 
   **Mobile View:**
 
-  <img src="./Readme-images/Mobile/Login Page.jpeg" alt="Login Page - Mobile" width="30%" />
+<table style="width: 100%; text-align: center;">
+  <tr>
+    <td><img src="./Readme-images/Mobile/Login Page/Login Page-1.jpeg" alt="MyMind Portal Login Page Mobile" width="100%" /></td>
+    <td><img src="./Readme-images/Mobile/Login Page/Login Page-2.jpeg" alt="MyMind Portal Login Page Mobile" width="100%" /></td>
+    <td><img src="./Readme-images/Mobile/Login Page//Login Page-3.jpeg" alt="MyMind Portal Login Page Mobile" width="100%" /></td>
+  </tr>
+</table>
   
 ### 2. **Customizable Pages** 🛠️
 Upon logging in, you are greeted with a **Welcome Message** 🎉 and given options to manage the following pages:
