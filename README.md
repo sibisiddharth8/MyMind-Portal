@@ -215,6 +215,28 @@ After login, navigate the portal using:
 - **Five Buttons** 🔘 leading to the respective pages (Bio, Skills, Experience, Projects, Education)
 - **Logout Button** 🚪 to securely log out.
 
+  **Desktop View:**
+
+<table style="width: 100%; text-align: center;">
+  <tr>
+    <td><img src="./Readme-images/Desktop/Portal Page Sibi Siddharth S MyMind Portal.png" alt="MyMind Portal Portal Page" width="100%" /></td>
+  </tr>
+</table>
+<table style="width: 100%; text-align: center;">
+  <tr>
+    <td><img src="./Readme-images/Desktop/Modals/Logout Modal Sibi Siddharth S MyMind Portal.png" alt="MyMind Portal Portal Page" width="100%" /></td>
+  </tr>
+</table>
+
+  **Mobile View:**
+
+<table style="width: 100%; text-align: center;">
+  <tr>
+    <td><img src="./Readme-images/Mobile/Portal Page.jpeg" alt="MyMind Portal Portal Page Mobile" width="100%" /></td>
+    <td><img src="./Readme-images/Mobile/Modals/Logout Modal.jpeg" alt="MyMind Portal Portal Page Mobile" width="100%" /></td>
+  </tr>
+</table>
+
 ### 4. **Reusable Components** 🔁
 - **Header** 🔝: Includes navigation back to the portal.
 - **Footer** 🔻: Includes the MyMind | Portfolio logo, your name, and social icons for **GitHub**, **LinkedIn**, and **Instagram**, along with a copyright message.
