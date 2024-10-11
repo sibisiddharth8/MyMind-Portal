@@ -43,13 +43,13 @@ Upon logging in, you are greeted with a **Welcome Message** 🎉 and given optio
 
 <table style="width: 100%; text-align: center;">
   <tr>
-    <td><img src="./Readme-images/Desktop//Bio Page/Bio Page-1 Sibi Siddharth S MyMind Portal.png" alt="Bio Page - Desktop" width="100%" /></td>
+    <td><img src="./Readme-images/Desktop//Bio Page/Bio Page-1 Sibi Siddharth S MyMind Portal.png" alt="MyMind Portal Bio Page" width="100%" /></td>
     <td>
   </tr>
 </table>
 <table style="width: 100%; text-align: center;">
   <tr>
-    <td><img src="./Readme-images/Desktop//Bio Page/Bio Page-2 Sibi Siddharth S MyMind Portal.png" alt="Bio Page - Desktop" width="100%" /></td>
+    <td><img src="./Readme-images/Desktop//Bio Page/Bio Page-2 Sibi Siddharth S MyMind Portal.png" alt="MyMind Portal Bio Page" width="100%" /></td>
     <td>
   </tr>
 </table>
@@ -59,9 +59,9 @@ Upon logging in, you are greeted with a **Welcome Message** 🎉 and given optio
 
 <table style="width: 100%; text-align: center;">
   <tr>
-    <td><img src="./Readme-images/Mobile/Bio Page//Bio Page -1.jpeg" alt="Bio Page - Mobile" width="100%" /></td>
-    <td><img src="./Readme-images/Mobile/Bio Page//Bio Page -2.jpeg" alt="Bio Page - Mobile" width="100%" /></td>
-    <td><img src="./Readme-images/Mobile/Modals/Success Modal.jpeg" alt="Success Modal - Mobile" width="100%" /></td>
+    <td><img src="./Readme-images/Mobile/Bio Page//Bio Page -1.jpeg" alt="MyMind Portal Bio Page Mobile" width="100%" /></td>
+    <td><img src="./Readme-images/Mobile/Bio Page//Bio Page -2.jpeg" alt="MyMind Portal Bio Page Mobile" width="100%" /></td>
+    <td><img src="./Readme-images/Mobile/Modals/Success Modal.jpeg" alt="MyMind Portal Bio Page Mobile" width="100%" /></td>
   </tr>
 </table>
 
@@ -76,13 +76,13 @@ Upon logging in, you are greeted with a **Welcome Message** 🎉 and given optio
 
 <table style="width: 100%; text-align: center;">
   <tr>
-    <td><img src="./Readme-images/Desktop/Skills Page/Skills Page-1 Sibi Siddharth S MyMind Portal.png" alt="Skills Page - Desktop" width="100%" /></td>
+    <td><img src="./Readme-images/Desktop/Skills Page/Skills Page-1 Sibi Siddharth S MyMind Portal.png" alt="MyMind Portal Skills Page" width="100%" /></td>
     <td>
   </tr>
 </table>
 <table style="width: 100%; text-align: center;">
   <tr>
-    <td><img src="./Readme-images/Desktop/Skills Page/Skills Page-2 Sibi Siddharth S MyMind Portal.png" alt="Skills Page - Desktop" width="100%" /></td>
+    <td><img src="./Readme-images/Desktop/Skills Page/Skills Page-2 Sibi Siddharth S MyMind Portal.png" alt="MyMind Portal Skills Page" width="100%" /></td>
     <td>
   </tr>
 </table>
@@ -92,9 +92,9 @@ Upon logging in, you are greeted with a **Welcome Message** 🎉 and given optio
 
 <table style="width: 100%; text-align: center;">
   <tr>
-    <td><img src="./Readme-images/Mobile/Skills Page/Skills Page-0.jpeg" alt="Skills Page - Mobile" width="100%" /></td>
-    <td><img src="./Readme-images/Mobile/Skills Page/Skills Page-1.jpeg" alt="Skills Page - Mobile" width="100%" /></td>
-    <td><img src="./Readme-images/Mobile/Skills Page/Skills Page-2.jpeg" alt="Skills Modal - Mobile" width="100%" /></td>
+    <td><img src="./Readme-images/Mobile/Skills Page/Skills Page-0.jpeg" alt="MyMind Portal Skills Page Mobile" width="100%" /></td>
+    <td><img src="./Readme-images/Mobile/Skills Page/Skills Page-1.jpeg" alt="MyMind Portal Skills Page Mobile" width="100%" /></td>
+    <td><img src="./Readme-images/Mobile/Skills Page/Skills Page-2.jpeg" alt="MyMind Portal Skills Page Mobile" width="100%" /></td>
   </tr>
 </table>
 
@@ -109,6 +109,32 @@ Upon logging in, you are greeted with a **Welcome Message** 🎉 and given optio
   - **Company Link** 🔗
   - **Skills Gained** 💡
   - **Company Logo** 🏙️
+
+  **Desktop View:**
+
+<table style="width: 100%; text-align: center;">
+  <tr>
+    <td><img src="./Readme-images/Desktop/Experience Page/Experience Page-1 Sibi Siddharth S MyMind Portal.png" alt="MyMind Portal Experience Page" width="100%" /></td>
+    <td>
+  </tr>
+</table>
+<table style="width: 100%; text-align: center;">
+  <tr>
+    <td><img src="./Readme-images/Desktop/Education Page/Education Page-2 Sibi Siddharth S MyMind Portal.png" alt="MyMind Portal Experience Page" width="100%" /></td>
+    <td>
+  </tr>
+</table>
+
+
+  **Mobile View:**
+
+<table style="width: 100%; text-align: center;">
+  <tr>
+    <td><img src="./Readme-images/Mobile/Experience Page/Experience Page-1.jpeg" alt="MyMind Portal Experience Page Mobile" width="100%" /></td>
+    <td><img src="./Readme-images/Mobile/Education Page/Education Page-2.jpeg" alt="MyMind Portal Experience Page Mobile" width="100%" /></td>
+    <td><img src="./Readme-images/Mobile/Experience Page/Experience Page-3.jpeg" alt="MyMind Portal Experience Page Mobile" width="100%" /></td>
+  </tr>
+</table>
 
 #### **Projects** 💻
 - Manage projects with options to **add**, **edit**, or **delete**.
