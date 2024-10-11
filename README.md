@@ -185,6 +185,31 @@ Upon logging in, you are greeted with a **Welcome Message** 🎉 and given optio
   - **Description** 📝
   - **School/College Logo** 🏫
 
+  **Desktop View:**
+
+<table style="width: 100%; text-align: center;">
+  <tr>
+    <td><img src="./Readme-images/Desktop/Education Page//Education Page-1 Sibi Siddharth S MyMind Portal.png" alt="MyMind Portal Education Page" width="100%" /></td>
+    <td>
+  </tr>
+</table>
+<table style="width: 100%; text-align: center;">
+  <tr>
+    <td><img src="./Readme-images/Desktop/Education Page/Education Page-2 Sibi Siddharth S MyMind Portal.png" alt="MyMind Portal Education Page" width="100%" /></td>
+    <td>
+  </tr>
+</table>
+
+  **Mobile View:**
+
+<table style="width: 100%; text-align: center;">
+  <tr>
+    <td><img src="./Readme-images/Mobile/Education Page/Education Page-1.jpeg" alt="MyMind Portal Education Page Mobile" width="100%" /></td>
+    <td><img src="./Readme-images/Mobile/Education Page/Education Page-2.jpeg" alt="MyMind Portal Education Page Mobile" width="100%" /></td>
+    <td><img src="./Readme-images/Mobile/Education Page/Education Page-3.jpeg" alt="MyMind Portal Education Page Mobile" width="100%" /></td>
+  </tr>
+</table>
+
 ### 3. **Portal Page** 🏠
 After login, navigate the portal using:
 - **Five Buttons** 🔘 leading to the respective pages (Bio, Skills, Experience, Projects, Education)
