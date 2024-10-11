@@ -125,7 +125,6 @@ Upon logging in, you are greeted with a **Welcome Message** 🎉 and given optio
   </tr>
 </table>
 
-
   **Mobile View:**
 
 <table style="width: 100%; text-align: center;">
@@ -149,6 +148,31 @@ Upon logging in, you are greeted with a **Welcome Message** 🎉 and given optio
   - **Project Image** 🖼️
   - **Team Members** 👥 (add/delete team members with inputs for their name, GitHub URL, LinkedIn URL, profile picture)
   - **Checkbox** to "Show Project on Home Page" 🏠 of the portfolio.
+
+    **Desktop View:**
+
+<table style="width: 100%; text-align: center;">
+  <tr>
+    <td><img src="./Readme-images/Desktop/Projects Page/Projects Page-1 Sibi Siddharth S MyMind Portal.png" alt="MyMind Portal Projects Page" width="100%" /></td>
+    <td>
+  </tr>
+</table>
+<table style="width: 100%; text-align: center;">
+  <tr>
+    <td><img src="./Readme-images/Desktop/Projects Page/Projects Page-2 Sibi Siddharth S MyMind Portal.png" alt="MyMind Portal Projects Page" width="100%" /></td>
+    <td>
+  </tr>
+</table>
+
+  **Mobile View:**
+
+<table style="width: 100%; text-align: center;">
+  <tr>
+    <td><img src="./Readme-images/Mobile/Projects Page/Projects Page-1.jpeg" alt="MyMind Portal Projects Page Mobile" width="100%" /></td>
+    <td><img src="./Readme-images/Mobile/Projects Page/Projects Page-2.jpeg" alt="MyMind Portal Projects Page Mobile" width="100%" /></td>
+    <td><img src="./Readme-images/Mobile/Projects Page/Projects Page-3.jpeg" alt="MyMind Portal Projects Page Mobile" width="100%" /></td>
+  </tr>
+</table>
 
 #### **Education** 🎓
 - Manage education with options to **add**, **edit**, or **delete**.
