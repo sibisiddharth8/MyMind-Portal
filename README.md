@@ -65,15 +65,38 @@ Upon logging in, you are greeted with a **Welcome Message** 🎉 and given optio
   </tr>
 </table>
 
-
-
-
 #### **Skills** 🛠️
 - Add, edit, or delete skills.
 - Inputs include:
   - **Skill Name** 💡
   - **Skill Type** (Frontend, Backend, AI/ML, Others) 🖥️
   - **Upload Skill Image** 🖼️
+
+  **Desktop View:**
+
+<table style="width: 100%; text-align: center;">
+  <tr>
+    <td><img src="./Readme-images/Desktop/Skills Page/Skills Page-1 Sibi Siddharth S MyMind Portal.png" alt="Skills Page - Desktop" width="100%" /></td>
+    <td>
+  </tr>
+</table>
+<table style="width: 100%; text-align: center;">
+  <tr>
+    <td><img src="./Readme-images/Desktop/Skills Page/Skills Page-2 Sibi Siddharth S MyMind Portal.png" alt="Skills Page - Desktop" width="100%" /></td>
+    <td>
+  </tr>
+</table>
+
+
+  **Mobile View:**
+
+<table style="width: 100%; text-align: center;">
+  <tr>
+    <td><img src="./Readme-images/Mobile/Skills Page/Skills Page-0.jpeg" alt="Skills Page - Mobile" width="100%" /></td>
+    <td><img src="./Readme-images/Mobile/Skills Page/Skills Page-1.jpeg" alt="Skills Page - Mobile" width="100%" /></td>
+    <td><img src="./Readme-images/Mobile/Skills Page/Skills Page-2.jpeg" alt="Skills Modal - Mobile" width="100%" /></td>
+  </tr>
+</table>
 
 #### **Experience** 💼
 - Add, edit, or delete experiences.
