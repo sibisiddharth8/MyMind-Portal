@@ -41,7 +41,12 @@ Upon logging in, you are greeted with a **Welcome Message** 🎉 and given optio
 
   **Desktop View:**
 
-  <img src="./Readme-images/Desktop/Bio Page/Bio Page-1 Sibi Siddharth S MyMind Portal.png" alt="Bio Page - Desktop" width="100%" />
+  <table style="width: 100%; text-align: center;">
+  <tr>
+    <td><img src="./Readme-images/Desktop//Bio Page/Bio Page-1 Sibi Siddharth S MyMind Portal.png" alt="Bio Page - Desktop" width="100%" /></td>
+    <td><img src="./Readme-images/Desktop//Bio Page/Bio Page-2 Sibi Siddharth S MyMind Portal.png" alt="Bio Page - Desktop" width="100%" /></td>
+  </tr>
+</table>
 
 
   **Mobile View:**
