@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/MyMind-Portal/static/css/main.c55bdca2.css",
-    "main.js": "/MyMind-Portal/static/js/main.278e63f1.js",
+    "main.js": "/MyMind-Portal/static/js/main.71a556d5.js",
     "static/js/453.709b0993.chunk.js": "/MyMind-Portal/static/js/453.709b0993.chunk.js",
     "static/media/placeholder.png": "/MyMind-Portal/static/media/placeholder.ba3e9327f074cac4e49e.png",
     "static/media/MyLogo.png": "/MyMind-Portal/static/media/MyLogo.e6e2f1ca8c59d9a76703.png",
     "index.html": "/MyMind-Portal/index.html",
     "main.c55bdca2.css.map": "/MyMind-Portal/static/css/main.c55bdca2.css.map",
-    "main.278e63f1.js.map": "/MyMind-Portal/static/js/main.278e63f1.js.map",
+    "main.71a556d5.js.map": "/MyMind-Portal/static/js/main.71a556d5.js.map",
     "453.709b0993.chunk.js.map": "/MyMind-Portal/static/js/453.709b0993.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.c55bdca2.css",
-    "static/js/main.278e63f1.js"
+    "static/js/main.71a556d5.js"
   ]
 }
