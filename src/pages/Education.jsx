@@ -139,20 +139,20 @@ const Education = () => {
       <Header Title="MyMind | Education Section" />
       <Container>
         <Form onSubmit={handleSubmit}>
-          <Label>School / College:</Label>
-          <Input type="text" name="school" value={neweducation.school} onChange={handleInputChange} required />
+          <Label>Institution Name: </Label>
+          <Input type="text" name="school" placeholder='Kathir College of Engineering' value={neweducation.school} onChange={handleInputChange} required />
 
           <Label>Degree:</Label>
-          <Input type="text" name="degree" value={neweducation.degree} onChange={handleInputChange} required />
+          <Input type="text" name="degree" placeholder='B.Tech Artificial Intelligence and Data Science' value={neweducation.degree} onChange={handleInputChange} required />
           
           <Label>Date:</Label>
-          <Input type="text" name="date" value={neweducation.date} onChange={handleInputChange} required />
+          <Input type="text" name="date" placeholder='Jan 20XX - Dec 20XX' value={neweducation.date} onChange={handleInputChange} required />
 
           <Label>Grade:</Label>
-          <Input type="text" name="grade" value={neweducation.grade} onChange={handleInputChange} required />
+          <Input type="text" name="grade" placeholder='CGPA : 8.01' value={neweducation.grade} onChange={handleInputChange} required />
 
           <Label>Description:</Label>
-          <Input type="text" name="desc" value={neweducation.desc} onChange={handleInputChange} required />
+          <TextArea rows="4" placeholder='Enter Your Description' name="desc" value={neweducation.desc} onChange={handleInputChange} required />
 
           <Label>Logo :</Label>
           <Input type="file" onChange={handleImageChange} accept="image/*" />
@@ -298,7 +298,17 @@ const Label = styled.label`
 const Input = styled.input`
   padding: 0.75rem;
   border-radius: 5px;
-  border: 1px solid ${(props) => props.theme.primary};
+  border: 1.5px solid ${(props) => props.theme.primary};
+  outline: none;
+`;
+
+const TextArea = styled.textarea`
+  padding: 0.75rem;
+  background-color: ${({ theme }) => theme.text_primary};
+  border-radius: 4px;
+  border: 1.5px solid ${(props) => props.theme.primary};
+  resize: vertical;
+  outline: none;
 `;
 
 const Button = styled.button`

@@ -296,7 +296,6 @@ const InputField = styled.input`
   border: 1.5px solid ${({ theme }) => theme.primary};
   border-radius: 4px;
   background-color: ${({ theme }) => theme.text_primary};
-  font-size: 16px;
   color: ${({ theme }) => theme.black};
 
   &:focus {
@@ -313,19 +312,9 @@ const TextArea = styled.textarea`
   padding: 0.75rem;
   background-color: ${({ theme }) => theme.text_primary};
   border-radius: 4px;
-  border-color: ${({ theme }) => theme.primary};
-  font-size: 16px;
+  border: 1.5px solid ${(props) => props.theme.primary};
   resize: vertical;
-
-  &:focus {
-    border-width: 2px;
-    outline: none;
-  }
-
-  @media (max-width: 768px) {
-    padding: 0.5rem;
-    font-size: 14px;
-  }
+  outline: none;
 `;
 
 // Styled label component

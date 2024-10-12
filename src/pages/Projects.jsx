@@ -253,8 +253,8 @@ const Projects = () => {
       />
       <Container>
         <Form onSubmit={isEditing ? handleUpdate : handleImageUpload}>
-          <Label>Title :</Label>
-          <Input type="text" value={projectTitle} onChange={(e) => setProjectTitle(e.target.value)} required />
+          <Label>Project Title :</Label>
+          <Input type="text" placeholder='MyMind | Portfolio' value={projectTitle} onChange={(e) => setProjectTitle(e.target.value)} required />
 
           <Label>Category :</Label>
           <Select value={projectCategory} onChange={(e) => setProjectCategory(e.target.value)}>
@@ -265,19 +265,19 @@ const Projects = () => {
           </Select>
 
           <Label>Date :</Label>
-          <Input type="text" value={projectDate} onChange={(e) => setProjectDate(e.target.value)} required />
+          <Input type="text" placeholder='Jan 20XX - Dec 20XX' value={projectDate} onChange={(e) => setProjectDate(e.target.value)} required />
 
           <Label>Description :</Label>
-          <TextArea rows="4" value={projectDescription} onChange={(e) => setProjectDescription(e.target.value)} required />
+          <TextArea rows="4" placeholder='Enter Project Description' value={projectDescription} onChange={(e) => setProjectDescription(e.target.value)} required />
 
           <Label>GitHub URL :</Label>
-          <Input type="url" value={projectGithub} onChange={(e) => setProjectGithub(e.target.value)} />
+          <Input type="url" placeholder='https://github.com/username' value={projectGithub} onChange={(e) => setProjectGithub(e.target.value)} />
 
           <Label>Web App URL :</Label>
-          <Input type="url" value={projectWebapp} onChange={(e) => setProjectWebapp(e.target.value)} />
+          <Input type="url" placeholder='https://sibisiddharth8.github.io/reponame/' value={projectWebapp} onChange={(e) => setProjectWebapp(e.target.value)} />
 
           <Label>Tags (comma separated) :</Label>
-          <Input type="text" value={projectTags} onChange={(e) => setProjectTags(e.target.value)} />
+          <Input type="text" placeholder='tag1, tag2, tag3' value={projectTags} onChange={(e) => setProjectTags(e.target.value)} />
 
           <Label>Project Image :</Label>
           <Input type="file" accept="image/*" onChange={(e) => setProjectImage(e.target.files[0])}/>
@@ -386,7 +386,7 @@ const Body = styled.div`
 const Container = styled.div`
   padding: 20px;
   padding-top: 90px;
-  max-width: 1080px;
+  max-width: 1020px;
   margin: 0 auto;
 `;
 
@@ -403,12 +403,11 @@ const Label = styled.label`
 `;
 
 const Input = styled.input`
-  width: 100%;
   padding: 0.75rem;
   border-radius: 5px;
-  border: 1px solid ${(props) => props.theme.primary};
+  border: 1.5px solid ${(props) => props.theme.primary};
   outline: none;
-  font-size: 1rem; 
+  width: 100%;
 `;
 
 const CheckboxHolder = styled.div`
@@ -423,12 +422,12 @@ const Checkbox = styled.input`
 `;
 
 const TextArea = styled.textarea`
-  padding: 12px;
-  border-radius: 5px;
-  border: 1px solid ${(props) => props.theme.primary};
+  padding: 0.75rem;
+  background-color: ${({ theme }) => theme.text_primary};
+  border-radius: 4px;
+  border: 1.5px solid ${(props) => props.theme.primary};
+  resize: vertical;
   outline: none;
-  font-size: 1rem; 
-  resize: vertical; 
 `;
 
 const Button = styled.button`
@@ -550,7 +549,6 @@ const DeleteButton = styled(Button)`
 const Select = styled.select`
   padding: 0.75rem;
   border-radius: 5px;
-  border: 1px solid ${(props) => props.theme.primary};
+  border: 1.5px solid ${(props) => props.theme.primary};
   outline: none;
-  font-size: 1rem;
 `;

@@ -144,23 +144,23 @@ const Experience = () => {
       <Container>
         <Form onSubmit={handleSubmit}>
           {/* Restored form fields */}
-          <Label>Company :</Label>
-          <Input type="text" name="company" value={newExperience.company} onChange={handleInputChange} required />
+          <Label>Company Name:</Label>
+          <Input type="text" name="company" placeholder='Squad of Creators...' value={newExperience.company} onChange={handleInputChange} required />
 
           <Label>Date :</Label>
-          <Input type="text" name="date" value={newExperience.date} onChange={handleInputChange} required />
+          <Input type="text" name="date" placeholder='Jan 20XX - Dec 20XX' value={newExperience.date} onChange={handleInputChange} required />
 
           <Label>Role :</Label>
-          <Input type="text" name="role" value={newExperience.role} onChange={handleInputChange} required />
+          <Input type="text" name="role" placeholder='Full Stack Developer' value={newExperience.role} onChange={handleInputChange} required />
 
           <Label>Description :</Label>
-          <Input type="text" name="desc" value={newExperience.desc} onChange={handleInputChange} required />
+          <TextArea type="text" name="desc" placeholder="Enter Your Description" rows="3" value={newExperience.desc} onChange={handleInputChange} required />
 
           <Label>Link :</Label>
-          <Input type="url" name="link" value={newExperience.link} onChange={handleInputChange} required />
+          <Input type="url" name="link" placeholder="www.squadofcreators.com" value={newExperience.link} onChange={handleInputChange} required />
 
           <Label>Skills : (comma separated)</Label>
-          <Input type="text" name="skills" value={newExperience.skills} onChange={handleInputChange} />
+          <Input type="text" name="skills" placeholder="reactjs, firebase, etc.." value={newExperience.skills} onChange={handleInputChange} />
 
           <Label>Upload Image :</Label>
           <Input type="file" onChange={handleImageChange} accept="image/*" />
@@ -309,7 +309,17 @@ const Label = styled.label`
 const Input = styled.input`
   padding: 0.75rem;
   border-radius: 5px;
-  border: 1px solid ${(props) => props.theme.primary};
+  border: 1.5px solid ${(props) => props.theme.primary};
+  outline: none;
+`;
+
+const TextArea = styled.textarea`
+  padding: 0.75rem;
+  background-color: ${({ theme }) => theme.text_primary};
+  border-radius: 4px;
+  border: 1.5px solid ${(props) => props.theme.primary};
+  resize: vertical;
+  outline: none;
 `;
 
 const Button = styled.button`
