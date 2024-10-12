@@ -24,6 +24,7 @@ const Projects = () => {
   const [projectImage, setProjectImage] = useState(null);
   const [projectWebapp, setProjectWebapp] = useState('');
   const [projectTags, setProjectTags] = useState('');
+  const [projectRank, setProjectRank] = useState('');
   const [members, setMembers] = useState([{ name: '', github: '', linkedin: '', img: '' }]);
   const [isEditing, setIsEditing] = useState(false);
   const [ontop, setontop] = useState(false); 
@@ -31,6 +32,8 @@ const Projects = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalType, setModalType] = useState('');
   const [loading, setLoading] = useState(true);
+
+
 
   useEffect(() => {
     fetchProjects();
@@ -70,19 +73,22 @@ const Projects = () => {
         await uploadBytes(imageRef, projectImage).then(async (snapshot) => {
             const imageUrl = await getDownloadURL(snapshot.ref);
 
+            const rank = projectRank ? parseInt(projectRank, 10) : 0;
             const newProject = {
-                title: projectTitle,
-                id: '',  // id will be assigned below
-                category: projectCategory,
-                date: projectDate,
-                description: projectDescription,
-                github: projectGithub,
-                image: imageUrl,
-                webapp: projectWebapp,
-                tags: projectTags.split(','),
-                member: members,
-                ontop: ontop ? 1 : 0,
-            };
+              title: projectTitle,
+              id: '', // id will be assigned below
+              category: projectCategory,
+              date: projectDate,
+              description: projectDescription,
+              github: projectGithub,
+              image: imageUrl,
+              webapp: projectWebapp,
+              tags: projectTags.split(','),
+              rank: rank,
+              member: members,
+              ontop: ontop ? 1 : 0,
+          };
+          
 
             const projectsRef = dbRef(database, 'projects');
             get(projectsRef).then((snapshot) => {
@@ -111,6 +117,7 @@ const Projects = () => {
     setProjectImage(null);
     setProjectWebapp('');
     setProjectTags('');
+    setProjectRank('');
     setMembers([{ name: '', github: '', linkedin: '', img: '' }]);
     setontop(false);
   };
@@ -127,6 +134,7 @@ const Projects = () => {
     setProjectGithub(project.github);
     setProjectWebapp(project.webapp);
     setProjectTags(project.tags.join(','));
+    setProjectRank(project.rank);
     setMembers(project.member);
     setontop(project.ontop === 1);
   };
@@ -136,14 +144,16 @@ const Projects = () => {
     e.preventDefault();
     setModalType('upload');
     setModalVisible(true);
-
+  
     const currentProject = projects.find(p => p.id === projectid);
-
+  
     let imageUrl = currentProject.image; // Preserve existing image if not updated
     if (projectImage) {
       imageUrl = await uploadImage();
     }
-
+  
+    const rank = projectRank ? parseInt(projectRank, 10) : 0; // Add this line
+  
     const updatedProject = {
       id: projectid,  // Use the original project id
       title: projectTitle,
@@ -154,19 +164,18 @@ const Projects = () => {
       image: imageUrl,
       webapp: projectWebapp,
       tags: projectTags.split(','),
+      rank: rank, 
       member: members,
       ontop: ontop ? 1 : 0,
     };
-
-    set(dbRef(database, `projects/${projectid}`), updatedProject).then(() => {
-      resetForm();
-      setIsEditing(false);
-      fetchProjects();
-    }).catch((error) => {
-      console.error('Error updating project:', error);
-    });
+  
+    await set(dbRef(database, `projects/${projectid}`), updatedProject);
+    resetForm();
+    setIsEditing(false);
+    fetchProjects(); // Re-fetch projects after updating
     setModalType('success');
-};
+  };
+  
 
 
   const uploadImage = async () => {
@@ -269,6 +278,9 @@ const Projects = () => {
 
           <Label>Description :</Label>
           <TextArea rows="4" placeholder='Enter Project Description' value={projectDescription} onChange={(e) => setProjectDescription(e.target.value)} required />
+
+          <Label>Rank :</Label>
+          <Input type="number" placeholder="Rank" value={projectRank} onChange={(e) => setProjectRank(e.target.value)} />
 
           <Label>GitHub URL :</Label>
           <Input type="url" placeholder='https://github.com/username' value={projectGithub} onChange={(e) => setProjectGithub(e.target.value)} />
