@@ -33,8 +33,6 @@ const Projects = () => {
   const [modalType, setModalType] = useState('');
   const [loading, setLoading] = useState(true);
 
-
-
   useEffect(() => {
     fetchProjects();
   }, []);
@@ -60,52 +58,65 @@ const Projects = () => {
 
   const handleImageUpload = async (e) => {
     e.preventDefault();
-
+  
     if (isEditing) {
-        handleUpdate(e);
-        return;
+      handleUpdate(e);
+      return;
     }
-
+  
+    // Upload member images first before uploading the project image
+    await Promise.all(members.map(async (member, index) => {
+      if (member.img) {
+        const imageRef = storageRef(storage, `profile_pics/${member.img.name}`);
+        const snapshot = await uploadBytes(imageRef, member.img);
+        const imageUrl = await getDownloadURL(snapshot.ref);
+  
+        // Update the member image URL
+        handleMemberChange(index, 'img', imageUrl);
+      }
+    }));
+  
+    // Now upload the project image
     if (projectImage) {
-        setModalType('upload');
-        setModalVisible(true);
-        const imageRef = storageRef(storage, `projects/${projectImage.name}`);
-        await uploadBytes(imageRef, projectImage).then(async (snapshot) => {
-            const imageUrl = await getDownloadURL(snapshot.ref);
-
-            const rank = projectRank ? parseInt(projectRank, 10) : 0;
-            const newProject = {
-              title: projectTitle,
-              id: '', // id will be assigned below
-              category: projectCategory,
-              date: projectDate,
-              description: projectDescription,
-              github: projectGithub,
-              image: imageUrl,
-              webapp: projectWebapp,
-              tags: projectTags.split(','),
-              rank: rank,
-              member: members,
-              ontop: ontop ? 1 : 0,
-          };
-          
-
-            const projectsRef = dbRef(database, 'projects');
-            get(projectsRef).then((snapshot) => {
-                const existingProjects = snapshot.val();
-                
-                // Determine the next sequential id
-                const nextId = existingProjects ? Math.max(...Object.keys(existingProjects).map(id => parseInt(id))) + 1 : 0;
-                
-                set(dbRef(database, `projects/${nextId}`), { ...newProject, id: nextId }).then(() => {
-                    resetForm();
-                    fetchProjects();
-                });
-            });
+      setModalType('upload');
+      setModalVisible(true);
+      const imageRef = storageRef(storage, `projects/${projectImage.name}`);
+      await uploadBytes(imageRef, projectImage).then(async (snapshot) => {
+        const imageUrl = await getDownloadURL(snapshot.ref);
+  
+        const rank = projectRank ? parseInt(projectRank, 10) : 0;
+        const newProject = {
+          title: projectTitle,
+          id: '', // id will be assigned below
+          category: projectCategory,
+          date: projectDate,
+          description: projectDescription,
+          github: projectGithub,
+          image: imageUrl,
+          webapp: projectWebapp,
+          tags: projectTags.split(','),
+          rank: rank,
+          member: members,
+          ontop: ontop ? 1 : 0,
+        };
+  
+        const projectsRef = dbRef(database, 'projects');
+        get(projectsRef).then((snapshot) => {
+          const existingProjects = snapshot.val();
+  
+          // Determine the next sequential id
+          const nextId = existingProjects ? Math.max(...Object.keys(existingProjects).map(id => parseInt(id))) + 1 : 0;
+  
+          set(dbRef(database, `projects/${nextId}`), { ...newProject, id: nextId }).then(() => {
+            resetForm();
+            fetchProjects();
+          });
         });
-        setModalType('success');
+      });
+      setModalType('success');
     }
-};
+  };
+  
 
   const resetForm = () => {
     setProjectTitle('');
@@ -217,43 +228,72 @@ const Projects = () => {
     }
 };
 
-  const handleMemberImageUpload = async (file, index) => {
-    if (file) {
+const handleMemberImageUpload = async (file, index) => {
+  if (file) {
+    const member = members[index];
+
+    // Check if the member already has an image
+    if (member.img) {
+      // If the member has an existing image, use the existing image URL
+      const updatedMembers = members.map((m, i) => 
+        i === index ? { ...m, img: member.img } : m
+      );
+      setMembers(updatedMembers);
+    } else {
+      // If the member doesn't have an image, upload the new image
       const imageRef = storageRef(storage, `profile_pics/${file.name}`);
       const snapshot = await uploadBytes(imageRef, file);
       const imageUrl = await getDownloadURL(snapshot.ref);
-      
-      const updatedMembers = members.map((member, i) => 
-        i === index ? { ...member, img: imageUrl } : member
+
+      const updatedMembers = members.map((m, i) => 
+        i === index ? { ...m, img: imageUrl } : m
       );
       setMembers(updatedMembers);
     }
-  };
-  
-  const handleMemberFileChange = (e, index) => {
-    const file = e.target.files[0];
-    handleMemberImageUpload(file, index);
-  };
+  }
+};
 
-  const handleDeleteMember = async (index) => {
-    if (members.length > 1) {
+const handleMemberFileChange = (e, index) => {
+  const file = e.target.files[0];
+  handleMemberImageUpload(file, index);
+};
+
+const handleDeleteMember = async (index) => {
+  if (members.length > 1) {
+    try {
+      // Get the member to delete
       const memberToDelete = members[index];
-  
-      if (memberToDelete.img) {
-        // Delete image from Firebase Storage
-        const imageRef = storageRef(storage, memberToDelete.img);
-        try {
-          await deleteObject(imageRef);
-        } catch (error) {
-          console.error("Error deleting member image: ", error);
-        }
-      }
+      console.log("Deleting member:", memberToDelete);
 
+      // Create a new members array without the member being deleted
       const updatedMembers = members.filter((_, i) => i !== index);
+
+      // Log the updated members array
+      console.log("Updated members array:", updatedMembers);
+
+      // Update the project in the database
+      const projectRef = dbRef(database, `projects/${projectid}`);
+      
+      // Fetch the current project data to maintain other properties
+      const projectSnapshot = await get(projectRef);
+      const currentProjectData = projectSnapshot.val();
+      
+      // Update the project members in the database
+      await set(projectRef, {
+        ...currentProjectData,
+        member: updatedMembers
+      });
+
+      // Update local state to reflect the deleted member
       setMembers(updatedMembers);
+      console.log("Member deleted successfully in Firebase.");
+    } catch (error) {
+      console.error("Error deleting member:", error);
     }
-  };
-  
+  } else {
+    console.log("Cannot delete member, at least one member required.");
+  }
+};
 
   return (
     <Body>
