@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../FirebaseConfig'; 
+import { auth } from '../FirebaseConfig';
 import { useAuth } from '../AuthContext.js';
 
 function Login() {
-    const [email, setEmail] = useState(''); 
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isSigningIn, setIsSigningIn] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
@@ -17,12 +17,12 @@ function Login() {
     const handleLogin = async () => {
         setIsSigningIn(true);
         setErrorMessage('');
-        
+
         try {
             await signInWithEmailAndPassword(auth, email, password);
             navigate('/Home');
         } catch (error) {
-            setErrorMessage('Incorrect Username / Password. Try Again !');
+            setErrorMessage('Incorrect Username / Password. Try Again!');
             console.error('Error logging in:', error.message);
         } finally {
             setIsSigningIn(false);
@@ -35,28 +35,34 @@ function Login() {
 
     return (
         <Container>
-            <Title>MyMind | Portal</Title>
-            <Input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-            />
-            <InputContainer>
+            <ContentWrapper>
+                <Title>MyMind | Portal</Title>
                 <Input
-                    type={showPassword ? 'text' : 'password'}
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    type="email"
+                    placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                 />
-                <ToggleIcon onClick={togglePasswordVisibility}>
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                </ToggleIcon>
-            </InputContainer>
-            {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-            <Button onClick={handleLogin} disabled={isSigningIn}>
-                {isSigningIn ? <Loader /> : 'Login'}
-            </Button>
+                <InputContainer>
+                    <Input
+                        type={showPassword ? 'text' : 'password'}
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <ToggleIcon onClick={togglePasswordVisibility}>
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </ToggleIcon>
+                </InputContainer>
+                {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+                <Button onClick={handleLogin} disabled={isSigningIn}>
+                    {isSigningIn ? <Loader /> : 'Login'}
+                </Button>
+            </ContentWrapper>
+            <Copyright>
+              &copy; {new Date().getFullYear()} <StyledSpan>Sibi Siddharth S</StyledSpan>. All rights reserved.
+            </Copyright>
+
         </Container>
     );
 }
@@ -82,10 +88,10 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 100dvh;
   background-color: ${(props) => props.theme.bg};
   padding: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  height: 100dvh;
+  position: relative;
 
   @media (max-width: 768px) {
     padding: 15px;
@@ -94,6 +100,15 @@ const Container = styled.div`
   @media (max-width: 575px) {
     padding: 10px;
   }
+`;
+
+const ContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
 `;
 
 const Title = styled.h1`
@@ -118,12 +133,11 @@ const InputContainer = styled.div`
 `;
 
 const Input = styled.input`
-  max-width: 400px;
+  width: 100%;
   padding: 15px;
   margin: 15px 0;
   border: 2px solid ${(props) => props.theme.primary};
   border-radius: 5px;
-  width: 100%;
   font-size: 1rem;
   transition: border-color 0.3s ease;
 
@@ -145,12 +159,11 @@ const Input = styled.input`
 
 const ToggleIcon = styled.div`
   position: absolute;
-  width: 20px;
-  top: 53.5%;
+  top: 50%;
   right: 15px;
   transform: translateY(-50%);
   cursor: pointer;
-  color: ${({ theme }) => theme.bg};
+  color: ${({ theme }) => theme.text_secondary};
 `;
 
 const Button = styled.button`
@@ -194,3 +207,27 @@ const ErrorMessage = styled.p`
     font-size: 0.8rem;
   }
 `;
+
+const Copyright = styled.p`
+  font-size: 0.9rem;
+  text-align: center;
+  color: ${(props) => props.theme.text_secondary};
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+
+  @media (max-width: 575px) {
+    font-size: 0.8rem;
+  }
+`;
+
+const StyledSpan = styled.span`
+  color: ${(props) => props.theme.primary};
+  font-weight: 500;
+
+  &:hover{
+    cursor: pointer;
+    opacity: 0.9;
+  }
+`
